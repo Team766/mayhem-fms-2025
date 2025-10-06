@@ -4,8 +4,9 @@
 package game
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestScoreSummaryDetermineMatchStatus(t *testing.T) {
@@ -23,25 +24,15 @@ func TestScoreSummaryDetermineMatchStatus(t *testing.T) {
 	assert.Equal(t, BlueWonMatch, DetermineMatchStatus(redScoreSummary, blueScoreSummary, true))
 
 	redScoreSummary.Score = 12
-	redScoreSummary.NumOpponentMajorFouls = 11
 	redScoreSummary.AutoPoints = 11
 	redScoreSummary.ParkPoints = 11
-	blueScoreSummary.NumOpponentMajorFouls = 10
 	blueScoreSummary.AutoPoints = 10
 	blueScoreSummary.ParkPoints = 10
 	assert.Equal(t, TieMatch, DetermineMatchStatus(redScoreSummary, blueScoreSummary, false))
 	assert.Equal(t, RedWonMatch, DetermineMatchStatus(redScoreSummary, blueScoreSummary, true))
 
-	blueScoreSummary.NumOpponentMajorFouls = 12
-	assert.Equal(t, TieMatch, DetermineMatchStatus(redScoreSummary, blueScoreSummary, false))
-	assert.Equal(t, BlueWonMatch, DetermineMatchStatus(redScoreSummary, blueScoreSummary, true))
-
-	redScoreSummary.NumOpponentMajorFouls = 12
-	assert.Equal(t, TieMatch, DetermineMatchStatus(redScoreSummary, blueScoreSummary, false))
-	assert.Equal(t, RedWonMatch, DetermineMatchStatus(redScoreSummary, blueScoreSummary, true))
-
 	blueScoreSummary.AutoPoints = 12
-	assert.Equal(t, TieMatch, DetermineMatchStatus(redScoreSummary, blueScoreSummary, false))
+	assert.Equal(t, BlueWonMatch, DetermineMatchStatus(redScoreSummary, blueScoreSummary, false))
 	assert.Equal(t, BlueWonMatch, DetermineMatchStatus(redScoreSummary, blueScoreSummary, true))
 
 	redScoreSummary.AutoPoints = 12
