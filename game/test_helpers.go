@@ -19,17 +19,17 @@ func TestScore1() *Score {
 
 		RobotsBypassed: [3]bool{false, false, true},
 		Mayhem: Mayhem{
-			AutoGamepiece1Level1Count:   1,
-			TeleopGamepiece1Level1Count: 2,
-			AutoGamepiece1Level2Count:   2,
-			TeleopGamepiece1Level2Count: 4,
-			AutoGamepiece2Count:         2,
-			TeleopGamepiece2Count:       4,
-			LeaveStatuses:              [3]bool{true, true, false},
-			ParkStatuses:               [3]bool{true, true, false},
+			AutoHullCount:          1,
+			TeleopHullCount:        2,
+			AutoDeckCount:          2,
+			TeleopDeckCount:        4,
+			EndgameKrakenLairCount: 2,
+			LeaveStatuses:          [3]bool{true, true, false},
+			MusterStatuses:         [3]bool{false, true, false},
+			ParkStatuses:           [3]bool{true, true, false},
 		},
-		Fouls:        fouls,
-		PlayoffDq:    false,
+		Fouls:     fouls,
+		PlayoffDq: false,
 	}
 }
 
@@ -38,24 +38,24 @@ func TestScore2() *Score {
 
 		RobotsBypassed: [3]bool{false, false, false},
 		Mayhem: Mayhem{
-			AutoGamepiece1Level1Count:   2,
-			TeleopGamepiece1Level1Count: 4,
-			AutoGamepiece1Level2Count:   3,
-			TeleopGamepiece1Level2Count: 5,
-			AutoGamepiece2Count:         1,
-			TeleopGamepiece2Count:       4,
-			LeaveStatuses:              [3]bool{false, true, false},
-			ParkStatuses:               [3]bool{false, true, false},
+			AutoHullCount:          2,
+			TeleopHullCount:        3,
+			AutoDeckCount:          1,
+			TeleopDeckCount:        5,
+			EndgameKrakenLairCount: 1,
+			LeaveStatuses:          [3]bool{false, true, false},
+			MusterStatuses:         [3]bool{false, true, false},
+			ParkStatuses:           [3]bool{false, true, false},
 		},
-		Fouls:        []Foul{},
-		PlayoffDq:    false,
+		Fouls:     []Foul{},
+		PlayoffDq: false,
 	}
 }
 
 func TestRanking1() *Ranking {
-	return &Ranking{TeamId: 254, Rank: 1, PreviousRank: 0, RankingFields: RankingFields{RankingPoints: 20, MatchPoints: 625, AutoPoints: 90, Gamepiece2Points: 40, Wins: 3, Losses: 2, Ties: 1, Disqualifications: 0, Played: 10}}
+	return &Ranking{TeamId: 254, Rank: 1, PreviousRank: 0, RankingFields: RankingFields{RankingPoints: 20, MatchPoints: 625, AutoPoints: 90, EndgameKrakenLairPoints: 40, Wins: 3, Losses: 2, Ties: 1, Disqualifications: 0, Played: 10}}
 }
 
 func TestRanking2() *Ranking {
-	return &Ranking{TeamId: 1114, Rank: 2, PreviousRank: 1, RankingFields: RankingFields{RankingPoints: 18, MatchPoints: 700, AutoPoints: 100, Gamepiece2Points: 50, Wins: 1, Losses: 3, Ties: 2, Disqualifications: 0, Played: 10}}
+	return &Ranking{TeamId: 1114, Rank: 2, PreviousRank: 1, RankingFields: RankingFields{RankingPoints: 18, MatchPoints: 700, AutoPoints: 100, EndgameKrakenLairPoints: 50, Wins: 1, Losses: 3, Ties: 2, Disqualifications: 0, Played: 10}}
 }
