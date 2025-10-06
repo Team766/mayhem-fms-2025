@@ -157,47 +157,44 @@ const handleRealtimeScore = function (data) {
   }
   const score = realtimeScore.Score;
 
-  // Update leave/park buttons
+  // Update leave/park/muster buttons
   for (let i = 0; i < 3; i++) {
     const i1 = i + 1;
     $(`#leave-${i1}`).attr("data-selected", score.Mayhem.LeaveStatuses[i]);
     $(`#park-${i1}`).attr("data-selected", score.Mayhem.ParkStatuses[i]);
+    $(`#muster-${i1}`).attr("data-selected", score.Mayhem.MusterStatuses[i]);
   }
 
-  // Update auto counters
-  $("#auto_gp1_l1 .counter-value").text(score.Mayhem.AutoGamepiece1Level1Count);
-  $("#auto_gp1_l2 .counter-value").text(score.Mayhem.AutoGamepiece1Level2Count);
-  $("#auto_gp2 .counter-value").text(score.Mayhem.AutoGamepiece2Count);
-  
-  // Update teleop counters
-  $("#teleop_gp1_l1 .counter-value").text(score.Mayhem.TeleopGamepiece1Level1Count);
-  $("#teleop_gp1_l2 .counter-value").text(score.Mayhem.TeleopGamepiece1Level2Count);
-  $("#teleop_gp2 .counter-value").text(score.Mayhem.TeleopGamepiece2Count);
+  // Update counters
+  $("#auto_hull .counter-value").text(score.Mayhem.AutoHullCount);
+  $("#auto_deck .counter-value").text(score.Mayhem.AutoDeckCount);
+  $("#teleop_hull .counter-value").text(score.Mayhem.TeleopHullCount);
+  $("#teleop_deck .counter-value").text(score.Mayhem.TeleopDeckCount);
+  $("#kraken_lair .counter-value").text(score.Mayhem.EndgameKrakenLairCount);
 };
 
 // Websocket message senders for various buttons
 const handleCounterClick = function (id, adjustment) {
   switch (id) {
     // Auto counters
-    case "auto_gp1_l1":
-      websocket.send("GP1", { Level: 1, Autonomous: true, Adjustment: adjustment });
+    case "auto_hull":
+      websocket.send("hull", { Autonomous: true, Adjustment: adjustment });
       break;
-    case "auto_gp1_l2":
-      websocket.send("GP1", { Level: 2, Autonomous: true, Adjustment: adjustment });
-      break;
-    case "auto_gp2":
-      websocket.send("GP2", { Autonomous: true, Adjustment: adjustment });
+    case "auto_deck":
+      websocket.send("deck", { Autonomous: true, Adjustment: adjustment });
       break;
     
     // Teleop counters
-    case "teleop_gp1_l1":
-      websocket.send("GP1", { Level: 1, Autonomous: false, Adjustment: adjustment });
+    case "teleop_hull":
+      websocket.send("hull", { Autonomous: false, Adjustment: adjustment });
       break;
-    case "teleop_gp1_l2":
-      websocket.send("GP1", { Level: 2, Autonomous: false, Adjustment: adjustment });
+    case "teleop_deck":
+      websocket.send("deck", { Autonomous: false, Adjustment: adjustment });
       break;
-    case "teleop_gp2":
-      websocket.send("GP2", { Autonomous: false, Adjustment: adjustment });
+      
+    // Kraken Lair counter
+    case "kraken_lair":
+      websocket.send("kraken_lair", { Adjustment: adjustment });
       break;
     
     default:
@@ -211,6 +208,10 @@ const handleLeaveClick = function (teamPosition) {
 
 const handleParkClick = function (teamPosition) {
   websocket.send("park", { TeamPosition: teamPosition });
+}
+
+const handleMusterClick = function (teamPosition) {
+  websocket.send("muster", { TeamPosition: teamPosition });
 }
 
 // Sends a websocket message to indicate that the score for this alliance is ready.

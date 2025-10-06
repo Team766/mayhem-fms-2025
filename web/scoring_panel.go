@@ -171,6 +171,20 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 				score.Mayhem.LeaveStatuses[args.TeamPosition-1] = !score.Mayhem.LeaveStatuses[args.TeamPosition-1]
 				scoreChanged = true
 			}
+		} else if command == "muster" {
+			args := struct {
+				TeamPosition int
+			}{}
+			err = mapstructure.Decode(data, &args)
+			if err != nil {
+				ws.WriteError(err.Error())
+				continue
+			}
+
+			if args.TeamPosition >= 1 && args.TeamPosition <= 3 {
+				score.Mayhem.MusterStatuses[args.TeamPosition-1] = !score.Mayhem.MusterStatuses[args.TeamPosition-1]
+				scoreChanged = true
+			}
 		} else if command == "park" {
 			args := struct {
 				TeamPosition int
@@ -185,9 +199,8 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 				score.Mayhem.ParkStatuses[args.TeamPosition-1] = !score.Mayhem.ParkStatuses[args.TeamPosition-1]
 				scoreChanged = true
 			}
-		} else if command == "GP1" {
+		} else if command == "hull" {
 			args := struct {
-				Level      int
 				Autonomous bool
 				Adjustment int
 			}{}
@@ -197,44 +210,20 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 				continue
 			}
 
-			if args.Level >= 1 && args.Level <= 3 {
-				if args.Autonomous {
-					switch args.Level {
-					case 1:
-						// Add the adjustment and ensure we don't go below zero
-						score.Mayhem.AutoGamepiece1Level1Count += args.Adjustment
-						if score.Mayhem.AutoGamepiece1Level1Count < 0 {
-							score.Mayhem.AutoGamepiece1Level1Count = 0
-						}
-						scoreChanged = true
-					case 2:
-						// Add the adjustment and ensure we don't go below zero
-						score.Mayhem.AutoGamepiece1Level2Count += args.Adjustment
-						if score.Mayhem.AutoGamepiece1Level2Count < 0 {
-							score.Mayhem.AutoGamepiece1Level2Count = 0
-						}
-						scoreChanged = true
-					}
-				} else {
-					switch args.Level {
-					case 1:
-						// Add the adjustment and ensure we don't go below zero
-						score.Mayhem.TeleopGamepiece1Level1Count += args.Adjustment
-						if score.Mayhem.TeleopGamepiece1Level1Count < 0 {
-							score.Mayhem.TeleopGamepiece1Level1Count = 0
-						}
-						scoreChanged = true
-					case 2:
-						// Add the adjustment and ensure we don't go below zero
-						score.Mayhem.TeleopGamepiece1Level2Count += args.Adjustment
-						if score.Mayhem.TeleopGamepiece1Level2Count < 0 {
-							score.Mayhem.TeleopGamepiece1Level2Count = 0
-						}
-						scoreChanged = true
-					}
+			if args.Autonomous {
+				score.Mayhem.AutoHullCount += args.Adjustment
+				if score.Mayhem.AutoHullCount < 0 {
+					score.Mayhem.AutoHullCount = 0
 				}
+				scoreChanged = true
+			} else {
+				score.Mayhem.TeleopHullCount += args.Adjustment
+				if score.Mayhem.TeleopHullCount < 0 {
+					score.Mayhem.TeleopHullCount = 0
+				}
+				scoreChanged = true
 			}
-		} else if command == "GP2" {
+		} else if command == "deck" {
 			args := struct {
 				Autonomous bool
 				Adjustment int
@@ -244,21 +233,34 @@ func (web *Web) scoringPanelWebsocketHandler(w http.ResponseWriter, r *http.Requ
 				ws.WriteError(err.Error())
 				continue
 			}
+
 			if args.Autonomous {
-				// Add the adjustment and ensure we don't go below zero
-				score.Mayhem.AutoGamepiece2Count += args.Adjustment
-				if score.Mayhem.AutoGamepiece2Count < 0 {
-					score.Mayhem.AutoGamepiece2Count = 0
+				score.Mayhem.AutoDeckCount += args.Adjustment
+				if score.Mayhem.AutoDeckCount < 0 {
+					score.Mayhem.AutoDeckCount = 0
 				}
 				scoreChanged = true
 			} else {
-				// Add the adjustment and ensure we don't go below zero
-				score.Mayhem.TeleopGamepiece2Count += args.Adjustment
-				if score.Mayhem.TeleopGamepiece2Count < 0 {
-					score.Mayhem.TeleopGamepiece2Count = 0
+				score.Mayhem.TeleopDeckCount += args.Adjustment
+				if score.Mayhem.TeleopDeckCount < 0 {
+					score.Mayhem.TeleopDeckCount = 0
 				}
 				scoreChanged = true
 			}
+		} else if command == "kraken_lair" {
+			args := struct {
+				Adjustment int
+			}{}
+			err = mapstructure.Decode(data, &args)
+			if err != nil {
+				ws.WriteError(err.Error())
+				continue
+			}
+			score.Mayhem.EndgameKrakenLairCount += args.Adjustment
+			if score.Mayhem.EndgameKrakenLairCount < 0 {
+				score.Mayhem.EndgameKrakenLairCount = 0
+			}
+			scoreChanged = true
 		} else if command == "addFoul" {
 			args := struct {
 				Alliance string
