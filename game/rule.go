@@ -28,7 +28,7 @@ var rules = []*Rule{
 	{11, "G435", true, false, "A ROBOT or HUMAN PLAYER may not intentionally permanently damage a gamepiece."},
 	{12, "M101", true, false, "A ROBOT may not intentionally eject a CANNONBALL from the FIELD (either directly or by bouncing off a FIELD element or other ROBOT)."},
 	{13, "M102", true, true, "A ROBOT may not go into other teams' endgame areas within the endgame for over 3 seconds."},
-	{14, "M103", true, true, "A ROBOT may contact an opposing robot while they are attempting to score while in their own KRAKEN LAIR."},
+	{14, "M103", true, true, "A ROBOT may not contact an opposing robot while they are attempting to score while in their own KRAKEN LAIR."},
 	{15, "M104", true, true, "A ROBOT may not enter the opposing alliance's SAFE HARBOR perimter during auton."},
 	{16, "M105", false, false, "A ROBOT may not shoot a CANNONBALL from inside the HUMAN PLAYER ZONE."},
 	{17, "M106", false, false, "A ROBOT may not cross the midfield line during auton."},
