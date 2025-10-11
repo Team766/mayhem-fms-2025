@@ -173,7 +173,7 @@ func TestMatchReviewEditCurrentMatch(t *testing.T) {
 		[3]bool{true, false, true},
 		web.arena.RedRealtimeScore.CurrentScore.Mayhem.LeaveStatuses,
 	)
-	assert.Equal(t, 21, web.arena.BlueRealtimeScore.CurrentScore.Mayhem.TeleopGamepiece1Level1Count)
+	assert.Equal(t, 21, web.arena.BlueRealtimeScore.CurrentScore.Mayhem.TeleopHullCount)
 	assert.Equal(t, 0, len(web.arena.RedRealtimeScore.CurrentScore.Fouls))
 	assert.Equal(t, 1, len(web.arena.BlueRealtimeScore.CurrentScore.Fouls))
 	assert.Equal(t, 1, len(web.arena.RedRealtimeScore.Cards))
