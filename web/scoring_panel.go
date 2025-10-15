@@ -20,46 +20,46 @@ import (
 )
 
 type ScoringPosition struct {
-	Title            string
-	Alliance         string
-	ScoresAuto       bool
-	ScoresEndgame    bool
-	ScoresStructure1 bool
-	ScoresStructure2 bool
+	Title              string
+	Alliance           string
+	ScoresAuto         bool
+	ScoresEndgame      bool
+	ScoresTreasureShip bool
+	ScoresKrakenLair   bool
 }
 
 var positionParameters = map[string]ScoringPosition{
 	"red_near": {
-		Title:            "Red Near",
-		Alliance:         "red",
-		ScoresAuto:       true,
-		ScoresEndgame:    false,
-		ScoresStructure1: true,
-		ScoresStructure2: false,
+		Title:              "Red Near",
+		Alliance:           "red",
+		ScoresAuto:         false,
+		ScoresEndgame:      false,
+		ScoresTreasureShip: true,
+		ScoresKrakenLair:   false,
 	},
 	"red_far": {
-		Title:            "Red Far",
-		Alliance:         "red",
-		ScoresAuto:       false,
-		ScoresEndgame:    true,
-		ScoresStructure1: false,
-		ScoresStructure2: true,
+		Title:              "Red Far",
+		Alliance:           "red",
+		ScoresAuto:         true,
+		ScoresEndgame:      true,
+		ScoresTreasureShip: false,
+		ScoresKrakenLair:   true,
 	},
 	"blue_near": {
-		Title:            "Blue Near",
-		Alliance:         "blue",
-		ScoresAuto:       true,
-		ScoresEndgame:    false,
-		ScoresStructure1: true,
-		ScoresStructure2: false,
+		Title:              "Blue Near",
+		Alliance:           "blue",
+		ScoresAuto:         false,
+		ScoresEndgame:      false,
+		ScoresTreasureShip: true,
+		ScoresKrakenLair:   false,
 	},
 	"blue_far": {
-		Title:            "Blue Far",
-		Alliance:         "blue",
-		ScoresAuto:       false,
-		ScoresEndgame:    true,
-		ScoresStructure1: false,
-		ScoresStructure2: true,
+		Title:              "Blue Far",
+		Alliance:           "blue",
+		ScoresAuto:         true,
+		ScoresEndgame:      true,
+		ScoresTreasureShip: false,
+		ScoresKrakenLair:   true,
 	},
 }
 

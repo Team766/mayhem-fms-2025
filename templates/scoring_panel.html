@@ -66,10 +66,15 @@ UI for entering realtime scores.
       {{template "teamButton" (dict "id" (printf "leave-%d" $i) "index" $i "class" "scoring-button" "onclick" (printf "handleLeaveClick(%d);" $i) "label" "Leave")}}
       {{end}}
     </div>
+    <div class="button-group" style="margin-top: 10px;">
+      {{range $i := seq 3}}
+      {{template "teamButton" (dict "id" (printf "muster-%d" $i) "index" $i "class" "scoring-button" "onclick" (printf "handleMusterClick(%d);" $i) "label" "Muster")}}
+      {{end}}
+    </div>
   </div>
   {{end}}
 
-  {{if .Position.ScoresStructure1}}
+  {{if .Position.ScoresTreasureShip}}
   <div class="scoring-section">
     <h2>Hull - Auto</h2>
     {{template "counter" (dict "id" "auto_hull" "label" "Auto Hull")}}
@@ -88,7 +93,7 @@ UI for entering realtime scores.
   </div>
   {{end}}
 
-  {{if .Position.ScoresStructure2}}
+  {{if .Position.ScoresKrakenLair}}
   <div class="scoring-section">
     <h2>Kraken Lair</h2>
     {{template "counter" (dict "id" "kraken_lair" "label" "Kraken Lair")}}
@@ -101,11 +106,6 @@ UI for entering realtime scores.
     <div class="button-group">
       {{range $i := seq 3}}
       {{template "teamButton" (dict "id" (printf "park-%d" $i) "index" $i "class" "scoring-button" "onclick" (printf "handleParkClick(%d);" $i) "label" "Park")}}
-      {{end}}
-    </div>
-    <div class="button-group" style="margin-top: 10px;">
-      {{range $i := seq 3}}
-      {{template "teamButton" (dict "id" (printf "muster-%d" $i) "index" $i "class" "scoring-button" "onclick" (printf "handleMusterClick(%d);" $i) "label" "Muster")}}
       {{end}}
     </div>
   </div>
