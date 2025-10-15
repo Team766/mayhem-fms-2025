@@ -16,16 +16,15 @@ func TestScore1() *Score {
 		{true, 25, 15},
 	}
 	return &Score{
-
 		RobotsBypassed: [3]bool{false, false, true},
 		Mayhem: Mayhem{
-			AutoHullCount:          1,
-			TeleopHullCount:        2,
-			AutoDeckCount:          2,
+			AutoHullCount:          2,  // Increased from 1 to 2 for more auto points
+			TeleopHullCount:        10, // Increased from 2 to 10 to trigger Scoring RP (10 + 4 = 14)
+			AutoDeckCount:          3,  // Increased from 2 to 3 for more auto points
 			TeleopDeckCount:        4,
-			EndgameKrakenLairCount: 2,
-			LeaveStatuses:          [3]bool{true, true, false},
-			MusterStatuses:         [3]bool{false, true, false},
+			EndgameKrakenLairCount: 3,                         // Increased from 2 to 3 to trigger Endgame RP
+			LeaveStatuses:          [3]bool{true, true, true}, // All robots left to maximize auto points
+			MusterStatuses:         [3]bool{true, true, true}, // All robots mustered to maximize auto points
 			ParkStatuses:           [3]bool{true, true, false},
 		},
 		Fouls:     fouls,
@@ -35,17 +34,16 @@ func TestScore1() *Score {
 
 func TestScore2() *Score {
 	return &Score{
-
 		RobotsBypassed: [3]bool{false, false, false},
 		Mayhem: Mayhem{
-			AutoHullCount:          2,
-			TeleopHullCount:        3,
-			AutoDeckCount:          1,
-			TeleopDeckCount:        5,
-			EndgameKrakenLairCount: 1,
-			LeaveStatuses:          [3]bool{false, true, false},
-			MusterStatuses:         [3]bool{false, true, false},
-			ParkStatuses:           [3]bool{false, true, false},
+			AutoHullCount:          3,                         // Increased from 2 to 3 for more auto points
+			TeleopHullCount:        5,                         // Increased from 3 to 5
+			AutoDeckCount:          2,                         // Increased from 1 to 2 for more auto points
+			TeleopDeckCount:        10,                        // Increased from 5 to 10 to trigger Scoring RP (5 + 10 = 15)
+			EndgameKrakenLairCount: 4,                         // Increased from 1 to 4 to trigger Endgame RP
+			LeaveStatuses:          [3]bool{true, true, true}, // All robots left to maximize auto points
+			MusterStatuses:         [3]bool{true, true, true}, // All robots mustered to maximize auto points
+			ParkStatuses:           [3]bool{true, true, true},
 		},
 		Fouls:     []Foul{},
 		PlayoffDq: false,
