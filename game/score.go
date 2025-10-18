@@ -54,7 +54,7 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		}
 	}
 
-	summary.MatchPoints = summary.LeavePoints + summary.TreasureShipPoints + summary.KrakenLairPoints + summary.ParkPoints
+	summary.MatchPoints = summary.LeavePoints + summary.MusterPoints + summary.TreasureShipPoints + summary.KrakenLairPoints + summary.ParkPoints
 
 	// Calculate penalty points.
 	for _, foul := range opponentScore.Fouls {

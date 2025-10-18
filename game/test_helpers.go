@@ -18,16 +18,16 @@ func TestScore1() *Score {
 	return &Score{
 		RobotsBypassed: [3]bool{false, false, true},
 		Mayhem: Mayhem{
-			AutoHullCount:          2,  // Increased from 1 to 2 for more auto points
-			TeleopHullCount:        10, // Increased from 2 to 10 to trigger Scoring RP (10 + 4 = 14)
-			AutoDeckCount:          3,  // Increased from 2 to 3 for more auto points
-			TeleopDeckCount:        4,
-			EndgameKrakenLairCount: 3,                         // Increased from 2 to 3 to trigger Endgame RP
-			LeaveStatuses:          [3]bool{true, true, true}, // All robots left to maximize auto points
-			MusterStatuses:         [3]bool{true, true, true}, // All robots mustered to maximize auto points
-			ParkStatuses:           [3]bool{true, true, false},
-		},
-		Fouls:     fouls,
+			AutoHullCount:          2,                          // 2 * 4 = 8
+			TeleopHullCount:        10,                         // 10 * 2 = 20
+			AutoDeckCount:          3,                          // 3 * 10 = 30
+			TeleopDeckCount:        4,                          // 4 * 5 = 20
+			EndgameKrakenLairCount: 3,                          // 3 * 10 = 30
+			LeaveStatuses:          [3]bool{true, true, true},  // 3 * 4 = 12
+			MusterStatuses:         [3]bool{true, true, true},  // 3 * 6 = 18
+			ParkStatuses:           [3]bool{true, true, false}, // 2 * 3 = 6
+		}, // Auton Points: 68 (RP), Scoring Count: 14 (RP), Endgame Count: 3 (RP)
+		Fouls:     fouls, // (2 minor * 5) + 5 major * 10 = 60
 		PlayoffDq: false,
 	}
 }
@@ -36,16 +36,16 @@ func TestScore2() *Score {
 	return &Score{
 		RobotsBypassed: [3]bool{false, false, false},
 		Mayhem: Mayhem{
-			AutoHullCount:          3,                         // Increased from 2 to 3 for more auto points
-			TeleopHullCount:        5,                         // Increased from 3 to 5
-			AutoDeckCount:          2,                         // Increased from 1 to 2 for more auto points
-			TeleopDeckCount:        10,                        // Increased from 5 to 10 to trigger Scoring RP (5 + 10 = 15)
-			EndgameKrakenLairCount: 4,                         // Increased from 1 to 4 to trigger Endgame RP
-			LeaveStatuses:          [3]bool{true, true, true}, // All robots left to maximize auto points
-			MusterStatuses:         [3]bool{true, true, true}, // All robots mustered to maximize auto points
-			ParkStatuses:           [3]bool{true, true, true},
-		},
-		Fouls:     []Foul{},
+			AutoHullCount:          3,                         // 3 * 4 = 12
+			TeleopHullCount:        5,                         // 5 * 2 = 10
+			AutoDeckCount:          2,                         // 2 * 10 = 20
+			TeleopDeckCount:        10,                        // 10 * 5 = 50
+			EndgameKrakenLairCount: 4,                         // 4 * 10 = 40
+			LeaveStatuses:          [3]bool{true, true, true}, // 3 * 4 = 12
+			MusterStatuses:         [3]bool{true, true, true}, // 3 * 6 = 18
+			ParkStatuses:           [3]bool{true, true, true}, // 3 * 3 = 9
+		}, // Auton Points: 62 (RP), Scoring Count: 15 (RP), Endgame Count: 4 (RP)
+		Fouls:     []Foul{}, // 0
 		PlayoffDq: false,
 	}
 }

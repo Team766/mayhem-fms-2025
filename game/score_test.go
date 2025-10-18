@@ -14,30 +14,30 @@ func TestScoreSummary(t *testing.T) {
 	blueScore := TestScore2()
 
 	redSummary := redScore.Summarize(blueScore)
-	assert.Equal(t, 10, redSummary.LeavePoints)
-	assert.Equal(t, 31, redSummary.AutoPoints)
-	assert.Equal(t, 10, redSummary.ParkPoints)
-	assert.Equal(t, 6, redSummary.KrakenLairPoints)
-	assert.Equal(t, 47, redSummary.MatchPoints) // 31 (auto) + 6 (kraken) + 10 (park)
+	assert.Equal(t, 12, redSummary.LeavePoints)
+	assert.Equal(t, 68, redSummary.AutoPoints)
+	assert.Equal(t, 6, redSummary.ParkPoints)
+	assert.Equal(t, 30, redSummary.KrakenLairPoints)
+	assert.Equal(t, 144, redSummary.MatchPoints)
 	assert.Equal(t, 0, redSummary.FoulPoints)
-	assert.Equal(t, 47, redSummary.Score)
+	assert.Equal(t, 144, redSummary.Score)
 	assert.Equal(t, true, redSummary.AutonRankingPoint)
 	assert.Equal(t, true, redSummary.ScoringRankingPoint)
 	assert.Equal(t, true, redSummary.EndgameRankingPoint)
 	assert.Equal(t, 3, redSummary.BonusRankingPoints)
 
 	blueSummary := blueScore.Summarize(redScore)
-	assert.Equal(t, 5, blueSummary.LeavePoints)
-	assert.Equal(t, 30, blueSummary.AutoPoints)
-	assert.Equal(t, 5, blueSummary.ParkPoints)
-	assert.Equal(t, 10, blueSummary.KrakenLairPoints)
-	assert.Equal(t, 45, blueSummary.MatchPoints) // 30 (auto) + 10 (kraken) + 5 (park)
-	assert.Equal(t, 34, blueSummary.FoulPoints)
-	assert.Equal(t, 79, blueSummary.Score) // 45 (match) + 34 (fouls)
+	assert.Equal(t, 12, blueSummary.LeavePoints)
+	assert.Equal(t, 62, blueSummary.AutoPoints)
+	assert.Equal(t, 9, blueSummary.ParkPoints)
+	assert.Equal(t, 40, blueSummary.KrakenLairPoints)
+	assert.Equal(t, 171, blueSummary.MatchPoints) // 30 (auto) + 10 (kraken) + 5 (park)
+	assert.Equal(t, 60, blueSummary.FoulPoints)
+	assert.Equal(t, 231, blueSummary.Score) // 45 (match) + 34 (fouls)
 	assert.Equal(t, true, blueSummary.AutonRankingPoint)
 	assert.Equal(t, true, blueSummary.ScoringRankingPoint)
-	assert.Equal(t, false, blueSummary.EndgameRankingPoint)
-	assert.Equal(t, 2, blueSummary.BonusRankingPoints)
+	assert.Equal(t, true, blueSummary.EndgameRankingPoint)
+	assert.Equal(t, 3, blueSummary.BonusRankingPoints)
 }
 
 func TestScoreEquals(t *testing.T) {
@@ -70,8 +70,8 @@ func TestScoreEquals(t *testing.T) {
 func TestAutonRankingPoint(t *testing.T) {
 	score := Score{
 		Mayhem: Mayhem{
-			AutoHullCount: 10,
-			AutoDeckCount: 5,
+			AutoHullCount: 0,
+			AutoDeckCount: 2,
 		},
 	}
 	summary := score.Summarize(&Score{})
@@ -79,8 +79,8 @@ func TestAutonRankingPoint(t *testing.T) {
 
 	score = Score{
 		Mayhem: Mayhem{
-			AutoHullCount: 5,
-			AutoDeckCount: 5,
+			AutoHullCount: 1,
+			AutoDeckCount: 1,
 		},
 	}
 	summary = score.Summarize(&Score{})
