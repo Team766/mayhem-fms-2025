@@ -65,19 +65,19 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 
 	// Calculate bonus ranking points.
 	// Auton Ranking Point - score 20+ points during auton
-	summary.AutonRankingPoint = summary.AutoPoints >= 20
+	summary.AutonRankingPoint = summary.AutoPoints >= AutonRankingPointThreshold
 	if summary.AutonRankingPoint {
 		summary.BonusRankingPoints++
 	}
 
 	// Scoring Ranking Point - score 14+ cannonballs during teleop+endgame
-	summary.ScoringRankingPoint = score.Mayhem.TeleopHullCount+score.Mayhem.TeleopDeckCount >= 14
+	summary.ScoringRankingPoint = score.Mayhem.TeleopHullCount+score.Mayhem.TeleopDeckCount >= ScoringRankingPointThreshold
 	if summary.ScoringRankingPoint {
 		summary.BonusRankingPoints++
 	}
 
 	// Endgame Ranking Point - score 3+ Kraken Lair
-	summary.EndgameRankingPoint = score.Mayhem.EndgameKrakenLairCount >= 3
+	summary.EndgameRankingPoint = score.Mayhem.EndgameKrakenLairCount >= EndgameRankingPointThreshold
 	if summary.EndgameRankingPoint {
 		summary.BonusRankingPoints++
 	}

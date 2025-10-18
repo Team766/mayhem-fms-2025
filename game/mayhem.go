@@ -25,7 +25,9 @@ const (
 	TeleopDeckPoints        = 5
 	EndgameKrakenLairPoints = 10
 
-	Gamepiece1RPThreshold = 8
-	MinorFoulPoints       = 5
-	MajorFoulPoints       = 10
+	AutonRankingPointThreshold   = 20
+	ScoringRankingPointThreshold = 14
+	EndgameRankingPointThreshold = 3
+	MinorFoulPoints              = 5
+	MajorFoulPoints              = 10
 )
