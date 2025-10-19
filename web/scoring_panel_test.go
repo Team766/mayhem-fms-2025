@@ -100,6 +100,20 @@ func TestScoringPanelWebsocket(t *testing.T) {
 	readWebsocketType(t, blueWs, "realtimeScore")
 	assert.Equal(t, [3]bool{true, false, false}, web.arena.RedRealtimeScore.CurrentScore.Mayhem.LeaveStatuses)
 
+	leaveData.TeamPosition = 1
+	redWs.Write("muster", leaveData)
+	leaveData.TeamPosition = 3
+	redWs.Write("muster", leaveData)
+	for i := 0; i < 2; i++ {
+		readWebsocketType(t, redWs, "realtimeScore")
+		readWebsocketType(t, blueWs, "realtimeScore")
+	}
+	assert.Equal(t, [3]bool{true, false, true}, web.arena.RedRealtimeScore.CurrentScore.Mayhem.MusterStatuses)
+	redWs.Write("muster", leaveData)
+	readWebsocketType(t, redWs, "realtimeScore")
+	readWebsocketType(t, blueWs, "realtimeScore")
+	assert.Equal(t, [3]bool{true, false, false}, web.arena.RedRealtimeScore.CurrentScore.Mayhem.MusterStatuses)
+
 	// Test hull and deck scoring commands
 	hullData := struct {
 		Autonomous bool
@@ -134,16 +148,14 @@ func TestScoringPanelWebsocket(t *testing.T) {
 
 	// Test deck for Red alliance (teleop)
 	deckData.Autonomous = false
-	deckData.Adjustment = -1
-	redWs.Write("deck", deckData)
-	redWs.Write("deck", deckData)
 	deckData.Adjustment = 1
 	redWs.Write("deck", deckData)
 	redWs.Write("deck", deckData)
-	redWs.Write("deck", deckData)
 	deckData.Adjustment = -1
 	redWs.Write("deck", deckData)
-	for i := 0; i < 6; i++ {
+	redWs.Write("deck", deckData)
+	redWs.Write("deck", deckData)
+	for i := 0; i < 5; i++ {
 		readWebsocketType(t, redWs, "realtimeScore")
 		readWebsocketType(t, blueWs, "realtimeScore")
 	}
@@ -151,7 +163,7 @@ func TestScoringPanelWebsocket(t *testing.T) {
 	// Verify counts after initial commands
 	assert.Equal(t, 0, web.arena.RedRealtimeScore.CurrentScore.Mayhem.TeleopHullCount)
 	assert.Equal(t, 2, web.arena.BlueRealtimeScore.CurrentScore.Mayhem.TeleopHullCount)
-	assert.Equal(t, 2, web.arena.RedRealtimeScore.CurrentScore.Mayhem.TeleopDeckCount)
+	assert.Equal(t, 0, web.arena.RedRealtimeScore.CurrentScore.Mayhem.TeleopDeckCount)
 	assert.Equal(t, 0, web.arena.BlueRealtimeScore.CurrentScore.Mayhem.TeleopDeckCount)
 
 	// Test hull and deck for Red alliance (auto and teleop)
@@ -190,7 +202,7 @@ func TestScoringPanelWebsocket(t *testing.T) {
 	}
 
 	// Verify final counts
-	assert.Equal(t, 1, web.arena.RedRealtimeScore.CurrentScore.Mayhem.TeleopHullCount)
+	assert.Equal(t, 2, web.arena.RedRealtimeScore.CurrentScore.Mayhem.TeleopHullCount)
 	assert.Equal(t, 0, web.arena.RedRealtimeScore.CurrentScore.Mayhem.TeleopDeckCount)
 	assert.Equal(t, 2, web.arena.RedRealtimeScore.CurrentScore.Mayhem.AutoHullCount)
 	assert.Equal(t, 2, web.arena.RedRealtimeScore.CurrentScore.Mayhem.AutoDeckCount)
