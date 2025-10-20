@@ -158,6 +158,17 @@ html {
   line-height: 27px;
   color: #fff;
 }
+
+/* Position score labels with spacing from white borders */
+.reversible-left .score-field {
+  padding-left: 10px;
+}
+
+.reversible-right .score-field {
+  flex-direction: row-reverse;
+  padding-right: 10px;
+}
+
 #matchCircle {
   position: absolute;
   top: -25px;
