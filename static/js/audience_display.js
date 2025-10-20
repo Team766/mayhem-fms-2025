@@ -147,10 +147,10 @@ const handleRealtimeScore = function (data) {
   $(`#${redSide}ScoreNumber`).text(data.Red.ScoreSummary.Score);
   $(`#${blueSide}ScoreNumber`).text(data.Blue.ScoreSummary.Score);
 
-  const redShipCount = data.Red.Score.Mayhem.ShipCount;
-  const redLairCount = data.Red.Score.Mayhem.EndgameKrakenLairCount;
-  const blueShipCount = data.Blue.Score.Mayhem.ShipCount;
-  const blueLairCount = data.Blue.Score.Mayhem.EndgameKrakenLairCount;
+  const redShipCount = data.Red.Score.Mayhem.ShipCount || 0;
+  const redLairCount = data.Red.Score.Mayhem.EndgameKrakenLairCount || 0;
+  const blueShipCount = data.Blue.Score.Mayhem.ShipCount || 0;
+  const blueLairCount = data.Blue.Score.Mayhem.EndgameKrakenLairCount || 0;
 
   $(`#${redSide}Ship`).text(redShipCount);
   $(`#${redSide}Lair`).text(redLairCount);
@@ -182,7 +182,6 @@ const handleScorePosted = function (data) {
   $(`#${redSide}FinalScoringRankingPoint`).attr("data-checked", data.RedScoreSummary.ScoringRankingPoint);
   $(`#${redSide}FinalEndgameRankingPoint`).html(data.RedScoreSummary.EndgameRankingPoint ? "&#x2714;" : "&#x2718;");
   $(`#${redSide}FinalEndgameRankingPoint`).attr("data-checked", data.RedScoreSummary.EndgameRankingPoint);
-  $(`#${redSide}FinalRankingPoints`).html(data.RedScoreSummary.BonusRankingPoints);
 
   $(`#${blueSide}FinalScore`).text(data.BlueScoreSummary.Score);
   $(`#${blueSide}FinalAlliance`).text("Alliance " + data.Match.PlayoffBlueAlliance);
@@ -206,7 +205,6 @@ const handleScorePosted = function (data) {
   $(`#${blueSide}FinalScoringRankingPoint`).attr("data-checked", data.BlueScoreSummary.ScoringRankingPoint);
   $(`#${blueSide}FinalEndgameRankingPoint`).html(data.BlueScoreSummary.EndgameRankingPoint ? "&#x2714;" : "&#x2718;");
   $(`#${blueSide}FinalEndgameRankingPoint`).attr("data-checked", data.BlueScoreSummary.EndgameRankingPoint);
-  $(`#${blueSide}FinalRankingPoints`).html(data.BlueScoreSummary.BonusRankingPoints);
 
   let matchName = data.Match.LongName;
   if (data.Match.NameDetail !== "") {
