@@ -147,9 +147,12 @@ const handleRealtimeScore = function (data) {
   $(`#${redSide}ScoreNumber`).text(data.Red.ScoreSummary.Score);
   $(`#${blueSide}ScoreNumber`).text(data.Blue.ScoreSummary.Score);
 
-  const redShipCount = data.Red.Score.Mayhem.ShipCount || 0;
+  const redShipCount = data.Red.Score.Mayhem.AutoHullCount + 
+    data.Red.Score.Mayhem.TeleopHullCount + data.Red.Score.Mayhem.AutoDeckCount + 
+    data.Red.Score.Mayhem.TeleopDeckCount;
   const redLairCount = data.Red.Score.Mayhem.EndgameKrakenLairCount || 0;
-  const blueShipCount = data.Blue.Score.Mayhem.ShipCount || 0;
+  const blueShipCount = data.Blue.Score.Mayhem.AutoHullCount + 
+    data.Blue.Score.Mayhem.TeleopHullCount + data.Blue.Score.Mayhem.AutoDeckCount + data.Blue.Score.Mayhem.TeleopDeckCount;
   const blueLairCount = data.Blue.Score.Mayhem.EndgameKrakenLairCount || 0;
 
   $(`#${redSide}Ship`).text(redShipCount);
