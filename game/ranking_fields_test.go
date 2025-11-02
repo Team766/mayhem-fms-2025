@@ -15,14 +15,14 @@ func TestAddScoreSummary(t *testing.T) {
 	rand.Seed(0)
 	redSummary := &ScoreSummary{
 		AutoPoints:         30,
-		Gamepiece2Points:   20,
+		KrakenLairPoints:   20,
 		MatchPoints:        64,
 		Score:              64,
 		BonusRankingPoints: 2,
 	}
 	blueSummary := &ScoreSummary{
 		AutoPoints:         16,
-		Gamepiece2Points:   40,
+		KrakenLairPoints:   40,
 		MatchPoints:        63,
 		Score:              83,
 		BonusRankingPoints: 1,
@@ -35,7 +35,7 @@ func TestAddScoreSummary(t *testing.T) {
 		RankingPoints:    2, // 0 for loss + 2 bonus ranking points
 		MatchPoints:      64,
 		AutoPoints:       30,
-		Gamepiece2Points: 20,
+		EndgameKrakenLairPoints: 20,
 		Losses:           1,
 		Played:           1,
 		// Random is set by the function and can't be predicted
@@ -43,14 +43,13 @@ func TestAddScoreSummary(t *testing.T) {
 	// Set the random value to match for comparison
 	expectedRankingFields.Random = rankingFields.Random
 	assert.Equal(t, expectedRankingFields, rankingFields)
-
 	// Add a win.
 	rankingFields.AddScoreSummary(blueSummary, redSummary, false)
 	expectedRankingFields = RankingFields{
 		RankingPoints:    6,       // 2 (previous) + 3 (win) + 1 (bonus ranking point)
 		MatchPoints:      64 + 63, // Previous + new match points
 		AutoPoints:       30 + 16, // Previous + new auto points
-		Gamepiece2Points: 20 + 40, // Previous + new gamepiece2 points
+		EndgameKrakenLairPoints: 20 + 40, // Previous + new kraken lair points
 		Wins:             1,
 		Losses:           1,
 		Played:           2,
@@ -66,7 +65,7 @@ func TestAddScoreSummary(t *testing.T) {
 		RankingPoints:    9,            // 6 (previous) + 1 (tie) + 2 (bonus ranking points)
 		MatchPoints:      64 + 63 + 64, // Previous + new match points
 		AutoPoints:       30 + 16 + 30, // Previous + new auto points
-		Gamepiece2Points: 20 + 40 + 20, // Previous + new gamepiece2 points
+		EndgameKrakenLairPoints: 20 + 40 + 20, // Previous + new kraken lair points
 		Wins:             1,
 		Losses:           1,
 		Ties:             1,
@@ -80,15 +79,15 @@ func TestAddScoreSummary(t *testing.T) {
 	// Add a disqualification.
 	rankingFields.AddScoreSummary(blueSummary, redSummary, true)
 	expectedRankingFields = RankingFields{
-		RankingPoints:     9,            // No change from previous since disqualified
-		MatchPoints:       64 + 63 + 64, // No change from previous since disqualified
-		AutoPoints:        30 + 16 + 30, // No change from previous since disqualified
-		Gamepiece2Points:  20 + 40 + 20, // No change from previous since disqualified
-		Wins:              1,
-		Losses:            1,
-		Ties:              1,
+		RankingPoints:    9,            // No change from previous since disqualified
+		MatchPoints:      64 + 63 + 64, // No change from previous since disqualified
+		AutoPoints:       30 + 16 + 30, // No change from previous since disqualified
+		EndgameKrakenLairPoints: 20 + 40 + 20, // No change from previous since disqualified
+		Wins:             1,
+		Losses:           1,
+		Ties:             1,
 		Disqualifications: 1,
-		Played:            4, // Still increments played counter
+		Played:           4, // Still increments played counter
 		// Random is set by the function and can't be predicted
 	}
 	// Set the random value to match for comparison
@@ -99,16 +98,16 @@ func TestAddScoreSummary(t *testing.T) {
 func TestSortRankings(t *testing.T) {
 	// Check tiebreakers.
 	rankings := make(Rankings, 10)
-	rankings[0] = Ranking{TeamId: 1, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 50, Gamepiece2Points: 50, Random: 0.49}}
-	rankings[1] = Ranking{TeamId: 2, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 50, Gamepiece2Points: 50, Random: 0.51}}
-	rankings[2] = Ranking{TeamId: 3, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 50, Gamepiece2Points: 49, Random: 0.50}}
-	rankings[3] = Ranking{TeamId: 4, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 50, Gamepiece2Points: 51, Random: 0.50}}
-	rankings[4] = Ranking{TeamId: 5, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 49, Gamepiece2Points: 50, Random: 0.50}}
-	rankings[5] = Ranking{TeamId: 6, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 51, Gamepiece2Points: 50, Random: 0.50}}
-	rankings[6] = Ranking{TeamId: 7, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 49, AutoPoints: 50, Gamepiece2Points: 50, Random: 0.50}}
-	rankings[7] = Ranking{TeamId: 8, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 51, AutoPoints: 50, Gamepiece2Points: 50, Random: 0.50}}
-	rankings[8] = Ranking{TeamId: 9, RankingFields: RankingFields{RankingPoints: 49, MatchPoints: 50, AutoPoints: 50, Gamepiece2Points: 50, Random: 0.50}}
-	rankings[9] = Ranking{TeamId: 10, RankingFields: RankingFields{RankingPoints: 51, MatchPoints: 50, AutoPoints: 50, Gamepiece2Points: 50, Random: 0.50}}
+	rankings[0] = Ranking{TeamId: 1, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 50, EndgameKrakenLairPoints: 50, Random: 0.49}}
+	rankings[1] = Ranking{TeamId: 2, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 50, EndgameKrakenLairPoints: 50, Random: 0.51}}
+	rankings[2] = Ranking{TeamId: 3, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 50, EndgameKrakenLairPoints: 49, Random: 0.50}}
+	rankings[3] = Ranking{TeamId: 4, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 50, EndgameKrakenLairPoints: 51, Random: 0.50}}
+	rankings[4] = Ranking{TeamId: 5, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 49, EndgameKrakenLairPoints: 50, Random: 0.50}}
+	rankings[5] = Ranking{TeamId: 6, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 50, AutoPoints: 51, EndgameKrakenLairPoints: 50, Random: 0.50}}
+	rankings[6] = Ranking{TeamId: 7, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 49, AutoPoints: 50, EndgameKrakenLairPoints: 50, Random: 0.50}}
+	rankings[7] = Ranking{TeamId: 8, RankingFields: RankingFields{RankingPoints: 50, MatchPoints: 51, AutoPoints: 50, EndgameKrakenLairPoints: 50, Random: 0.50}}
+	rankings[8] = Ranking{TeamId: 9, RankingFields: RankingFields{RankingPoints: 49, MatchPoints: 50, AutoPoints: 50, EndgameKrakenLairPoints: 50, Random: 0.50}}
+	rankings[9] = Ranking{TeamId: 10, RankingFields: RankingFields{RankingPoints: 51, MatchPoints: 50, AutoPoints: 50, EndgameKrakenLairPoints: 50, Random: 0.50}}
 	for i := range rankings {
 		rankings[i].Played = 10 // Set played matches for all to make averages easy
 	}

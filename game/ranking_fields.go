@@ -8,16 +8,16 @@ package game
 import "math/rand"
 
 type RankingFields struct {
-	RankingPoints     int
-	MatchPoints       int
-	AutoPoints        int
-	Gamepiece2Points  int
-	Random            float64
-	Wins              int
-	Losses            int
-	Ties              int
-	Disqualifications int
-	Played            int
+	RankingPoints           int
+	MatchPoints             int
+	AutoPoints              int
+	EndgameKrakenLairPoints int
+	Random                  float64
+	Wins                    int
+	Losses                  int
+	Ties                    int
+	Disqualifications       int
+	Played                  int
 }
 
 type Ranking struct {
@@ -56,7 +56,7 @@ func (fields *RankingFields) AddScoreSummary(ownScore *ScoreSummary, opponentSco
 	// Assign tiebreaker points.
 	fields.MatchPoints += ownScore.MatchPoints
 	fields.AutoPoints += ownScore.AutoPoints
-	fields.Gamepiece2Points += ownScore.Gamepiece2Points
+	fields.EndgameKrakenLairPoints += ownScore.KrakenLairPoints
 }
 
 // Helper function to implement the required interface for Sort.
@@ -73,10 +73,10 @@ func (rankings Rankings) Less(i, j int) bool {
 	if a.RankingPoints*b.Played == b.RankingPoints*a.Played {
 		if a.MatchPoints*b.Played == b.MatchPoints*a.Played {
 			if a.AutoPoints*b.Played == b.AutoPoints*a.Played {
-				if a.Gamepiece2Points*b.Played == b.Gamepiece2Points*a.Played {
+				if a.EndgameKrakenLairPoints*b.Played == b.EndgameKrakenLairPoints*a.Played {
 					return a.Random > b.Random
 				}
-				return a.Gamepiece2Points*b.Played > b.Gamepiece2Points*a.Played
+				return a.EndgameKrakenLairPoints*b.Played > b.EndgameKrakenLairPoints*a.Played
 			}
 			return a.AutoPoints*b.Played > b.AutoPoints*a.Played
 		}

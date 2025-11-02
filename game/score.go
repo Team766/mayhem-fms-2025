@@ -28,23 +28,24 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		}
 	}
 
-	summary.AutoPoints = summary.LeavePoints +
-		score.Mayhem.AutoGamepiece1Level1Count*AutoGamepiece1Level1Points +
-		score.Mayhem.AutoGamepiece1Level2Count*AutoGamepiece1Level2Points +
-		score.Mayhem.AutoGamepiece2Count*AutoGamepiece2Points
+	for _, status := range score.Mayhem.MusterStatuses {
+		if status {
+			summary.MusterPoints += MusterPoints
+		}
+	}
 
-	summary.NumGamepiece1 = score.Mayhem.AutoGamepiece1Level1Count + score.Mayhem.AutoGamepiece1Level2Count +
-		score.Mayhem.TeleopGamepiece1Level1Count + score.Mayhem.TeleopGamepiece1Level2Count
+	summary.AutoPoints = summary.LeavePoints + summary.MusterPoints +
+		score.Mayhem.AutoHullCount*AutoHullPoints +
+		score.Mayhem.AutoDeckCount*AutoDeckPoints
 
-	summary.Gamepiece1Points = score.Mayhem.AutoGamepiece1Level1Count*AutoGamepiece1Level1Points +
-		score.Mayhem.AutoGamepiece1Level2Count*AutoGamepiece1Level2Points +
-		score.Mayhem.TeleopGamepiece1Level1Count*TeleopGamepiece1Level1Points +
-		score.Mayhem.TeleopGamepiece1Level2Count*TeleopGamepiece1Level2Points
+	summary.DeckPoints = score.Mayhem.AutoDeckCount*AutoDeckPoints +
+		score.Mayhem.TeleopDeckCount*TeleopDeckPoints
 
-	summary.NumGamepiece2 = score.Mayhem.AutoGamepiece2Count + score.Mayhem.TeleopGamepiece2Count
+	summary.TreasureShipPoints = score.Mayhem.AutoHullCount*AutoHullPoints +
+		score.Mayhem.TeleopHullCount*TeleopHullPoints +
+		summary.DeckPoints
 
-	summary.Gamepiece2Points = score.Mayhem.AutoGamepiece2Count*AutoGamepiece2Points +
-		score.Mayhem.TeleopGamepiece2Count*TeleopGamepiece2Points
+	summary.KrakenLairPoints = score.Mayhem.EndgameKrakenLairCount * EndgameKrakenLairPoints
 
 	// Calculate park points.
 	for _, status := range score.Mayhem.ParkStatuses {
@@ -53,56 +54,31 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 		}
 	}
 
-	summary.MatchPoints = summary.LeavePoints + summary.Gamepiece1Points + summary.Gamepiece2Points + summary.ParkPoints
+	summary.MatchPoints = summary.LeavePoints + summary.MusterPoints + summary.TreasureShipPoints + summary.KrakenLairPoints + summary.ParkPoints
 
 	// Calculate penalty points.
 	for _, foul := range opponentScore.Fouls {
 		summary.FoulPoints += foul.PointValue()
-		if foul.IsMajor {
-			summary.NumOpponentMajorFouls++
-		}
 	}
 
 	summary.Score = summary.MatchPoints + summary.FoulPoints
 
 	// Calculate bonus ranking points.
-	// Leave Bonus RP
-	allRobotsLeft := true
-	for i, left := range score.Mayhem.LeaveStatuses {
-		if !left && !score.RobotsBypassed[i] {
-			allRobotsLeft = false
-			break
-		}
-	}
-	if allRobotsLeft {
-		summary.LeaveBonusRankingPoint = true
-	}
-
-	// Gamepiece 1 Bonus RP
-	if summary.NumGamepiece1 >= Gamepiece1RPThreshold {
-		summary.Gamepiece1BonusRankingPoint = true
-	}
-
-	// Park Bonus RP
-	allRobotsParked := true
-	for i, parked := range score.Mayhem.ParkStatuses {
-		if !parked && !score.RobotsBypassed[i] {
-			allRobotsParked = false
-			break
-		}
-	}
-	if allRobotsParked {
-		summary.ParkBonusRankingPoint = true
-	}
-
-	// Add up the bonus ranking points.
-	if summary.LeaveBonusRankingPoint {
+	// Auton Ranking Point - score 20+ points during auton
+	summary.AutonRankingPoint = summary.AutoPoints >= AutonRankingPointThreshold
+	if summary.AutonRankingPoint {
 		summary.BonusRankingPoints++
 	}
-	if summary.Gamepiece1BonusRankingPoint {
+
+	// Scoring Ranking Point - score 14+ cannonballs during teleop+endgame
+	summary.ScoringRankingPoint = score.Mayhem.TeleopHullCount+score.Mayhem.TeleopDeckCount >= ScoringRankingPointThreshold
+	if summary.ScoringRankingPoint {
 		summary.BonusRankingPoints++
 	}
-	if summary.ParkBonusRankingPoint {
+
+	// Endgame Ranking Point - score 3+ Kraken Lair
+	summary.EndgameRankingPoint = score.Mayhem.EndgameKrakenLairCount >= EndgameRankingPointThreshold
+	if summary.EndgameRankingPoint {
 		summary.BonusRankingPoints++
 	}
 
@@ -112,12 +88,12 @@ func (score *Score) Summarize(opponentScore *Score) *ScoreSummary {
 // Equals returns true if and only if all fields of the two scores are equal.
 func (score *Score) Equals(other *Score) bool {
 	if score.Mayhem.LeaveStatuses != other.Mayhem.LeaveStatuses ||
-		score.Mayhem.AutoGamepiece1Level1Count != other.Mayhem.AutoGamepiece1Level1Count ||
-		score.Mayhem.TeleopGamepiece1Level1Count != other.Mayhem.TeleopGamepiece1Level1Count ||
-		score.Mayhem.AutoGamepiece1Level2Count != other.Mayhem.AutoGamepiece1Level2Count ||
-		score.Mayhem.TeleopGamepiece1Level2Count != other.Mayhem.TeleopGamepiece1Level2Count ||
-		score.Mayhem.AutoGamepiece2Count != other.Mayhem.AutoGamepiece2Count ||
-		score.Mayhem.TeleopGamepiece2Count != other.Mayhem.TeleopGamepiece2Count ||
+		score.Mayhem.MusterStatuses != other.Mayhem.MusterStatuses ||
+		score.Mayhem.AutoHullCount != other.Mayhem.AutoHullCount ||
+		score.Mayhem.TeleopHullCount != other.Mayhem.TeleopHullCount ||
+		score.Mayhem.AutoDeckCount != other.Mayhem.AutoDeckCount ||
+		score.Mayhem.TeleopDeckCount != other.Mayhem.TeleopDeckCount ||
+		score.Mayhem.EndgameKrakenLairCount != other.Mayhem.EndgameKrakenLairCount ||
 		score.Mayhem.ParkStatuses != other.Mayhem.ParkStatuses ||
 		score.RobotsBypassed != other.RobotsBypassed ||
 		score.PlayoffDq != other.PlayoffDq ||

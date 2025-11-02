@@ -147,17 +147,18 @@ const handleRealtimeScore = function (data) {
   $(`#${redSide}ScoreNumber`).text(data.Red.ScoreSummary.Score);
   $(`#${blueSide}ScoreNumber`).text(data.Blue.ScoreSummary.Score);
 
-  const redGp1 = data.Red.Score.Mayhem.AutoGamepiece1Level1Count + data.Red.Score.Mayhem.TeleopGamepiece1Level1Count +
-    data.Red.Score.Mayhem.AutoGamepiece1Level2Count + data.Red.Score.Mayhem.TeleopGamepiece1Level2Count;
-  const redGp2 = data.Red.Score.Mayhem.AutoGamepiece2Count + data.Red.Score.Mayhem.TeleopGamepiece2Count;
-  const blueGp1 = data.Blue.Score.Mayhem.AutoGamepiece1Level1Count + data.Blue.Score.Mayhem.TeleopGamepiece1Level1Count +
-    data.Blue.Score.Mayhem.AutoGamepiece1Level2Count + data.Blue.Score.Mayhem.TeleopGamepiece1Level2Count;
-  const blueGp2 = data.Blue.Score.Mayhem.AutoGamepiece2Count + data.Blue.Score.Mayhem.TeleopGamepiece2Count;
+  const redShipCount = data.Red.Score.Mayhem.AutoHullCount + 
+    data.Red.Score.Mayhem.TeleopHullCount + data.Red.Score.Mayhem.AutoDeckCount + 
+    data.Red.Score.Mayhem.TeleopDeckCount;
+  const redLairCount = data.Red.Score.Mayhem.EndgameKrakenLairCount || 0;
+  const blueShipCount = data.Blue.Score.Mayhem.AutoHullCount + 
+    data.Blue.Score.Mayhem.TeleopHullCount + data.Blue.Score.Mayhem.AutoDeckCount + data.Blue.Score.Mayhem.TeleopDeckCount;
+  const blueLairCount = data.Blue.Score.Mayhem.EndgameKrakenLairCount || 0;
 
-  $(`#${redSide}Gp1`).text(redGp1);
-  $(`#${redSide}Gp2`).text(redGp2);
-  $(`#${blueSide}Gp1`).text(blueGp1);
-  $(`#${blueSide}Gp2`).text(blueGp2);
+  $(`#${redSide}Ship`).text(redShipCount);
+  $(`#${redSide}Lair`).text(redLairCount);
+  $(`#${blueSide}Ship`).text(blueShipCount);
+  $(`#${blueSide}Lair`).text(blueLairCount);
 };
 
 // Handles a websocket message to populate the final score data.
@@ -173,17 +174,17 @@ const handleScorePosted = function (data) {
     setTeamInfo(redSide, 4, 0, data.RedCards, data.RedRankings);
   }
   $(`#${redSide}FinalLeavePoints`).text(data.RedScoreSummary.LeavePoints);
-  $(`#${redSide}FinalGamepiece1Points`).text(data.RedScoreSummary.Gamepiece1Points);
-  $(`#${redSide}FinalGamepiece2Points`).text(data.RedScoreSummary.Gamepiece2Points);
+  $(`#${redSide}FinalMusterPoints`).text(data.RedScoreSummary.MusterPoints);
+  $(`#${redSide}FinalShipPoints`).text(data.RedScoreSummary.TreasureShipPoints);
+  $(`#${redSide}FinalLairPoints`).text(data.RedScoreSummary.KrakenLairPoints);
   $(`#${redSide}FinalParkPoints`).text(data.RedScoreSummary.ParkPoints);
   $(`#${redSide}FinalFoulPoints`).text(data.RedScoreSummary.FoulPoints);
-  $(`#${redSide}FinalLeaveRankingPoint`).html(data.RedScoreSummary.LeaveBonusRankingPoint ? "&#x2714;" : "&#x2718;");
-  $(`#${redSide}FinalLeaveRankingPoint`).attr("data-checked", data.RedScoreSummary.LeaveBonusRankingPoint);
-  $(`#${redSide}FinalGamepiece1RankingPoint`).html(data.RedScoreSummary.Gamepiece1BonusRankingPoint ? "&#x2714;" : "&#x2718;");
-  $(`#${redSide}FinalGamepiece1RankingPoint`).attr("data-checked", data.RedScoreSummary.Gamepiece1BonusRankingPoint);
-  $(`#${redSide}FinalParkRankingPoint`).html(data.RedScoreSummary.ParkBonusRankingPoint ? "&#x2714;" : "&#x2718;");
-  $(`#${redSide}FinalParkRankingPoint`).attr("data-checked", data.RedScoreSummary.ParkBonusRankingPoint);
-  $(`#${redSide}FinalRankingPoints`).html(data.RedRankingPoints);
+  $(`#${redSide}FinalAutonRankingPoint`).html(data.RedScoreSummary.AutonRankingPoint ? "&#x2714;" : "&#x2718;");
+  $(`#${redSide}FinalAutonRankingPoint`).attr("data-checked", data.RedScoreSummary.AutonRankingPoint);
+  $(`#${redSide}FinalScoringRankingPoint`).html(data.RedScoreSummary.ScoringRankingPoint ? "&#x2714;" : "&#x2718;");
+  $(`#${redSide}FinalScoringRankingPoint`).attr("data-checked", data.RedScoreSummary.ScoringRankingPoint);
+  $(`#${redSide}FinalEndgameRankingPoint`).html(data.RedScoreSummary.EndgameRankingPoint ? "&#x2714;" : "&#x2718;");
+  $(`#${redSide}FinalEndgameRankingPoint`).attr("data-checked", data.RedScoreSummary.EndgameRankingPoint);
 
   $(`#${blueSide}FinalScore`).text(data.BlueScoreSummary.Score);
   $(`#${blueSide}FinalAlliance`).text("Alliance " + data.Match.PlayoffBlueAlliance);
@@ -196,17 +197,17 @@ const handleScorePosted = function (data) {
     setTeamInfo(blueSide, 4, 0, data.BlueCards, data.BlueRankings);
   }
   $(`#${blueSide}FinalLeavePoints`).text(data.BlueScoreSummary.LeavePoints);
-  $(`#${blueSide}FinalGamepiece1Points`).text(data.BlueScoreSummary.Gamepiece1Points);
-  $(`#${blueSide}FinalGamepiece2Points`).text(data.BlueScoreSummary.Gamepiece2Points);
+  $(`#${blueSide}FinalMusterPoints`).text(data.BlueScoreSummary.MusterPoints);
+  $(`#${blueSide}FinalShipPoints`).text(data.BlueScoreSummary.TreasureShipPoints);
+  $(`#${blueSide}FinalLairPoints`).text(data.BlueScoreSummary.KrakenLairPoints);
   $(`#${blueSide}FinalParkPoints`).text(data.BlueScoreSummary.ParkPoints);
   $(`#${blueSide}FinalFoulPoints`).text(data.BlueScoreSummary.FoulPoints);
-  $(`#${blueSide}FinalLeaveRankingPoint`).html(data.BlueScoreSummary.LeaveBonusRankingPoint ? "&#x2714;" : "&#x2718;");
-  $(`#${blueSide}FinalLeaveRankingPoint`).attr("data-checked", data.BlueScoreSummary.LeaveBonusRankingPoint);
-  $(`#${blueSide}FinalGamepiece1RankingPoint`).html(data.BlueScoreSummary.Gamepiece1BonusRankingPoint ? "&#x2714;" : "&#x2718;");
-  $(`#${blueSide}FinalGamepiece1RankingPoint`).attr("data-checked", data.BlueScoreSummary.Gamepiece1BonusRankingPoint);
-  $(`#${blueSide}FinalParkRankingPoint`).html(data.BlueScoreSummary.ParkBonusRankingPoint ? "&#x2714;" : "&#x2718;");
-  $(`#${blueSide}FinalParkRankingPoint`).attr("data-checked", data.BlueScoreSummary.ParkBonusRankingPoint);
-  $(`#${blueSide}FinalRankingPoints`).html(data.BlueRankingPoints);
+  $(`#${blueSide}FinalAutonRankingPoint`).html(data.BlueScoreSummary.AutonRankingPoint ? "&#x2714;" : "&#x2718;");
+  $(`#${blueSide}FinalAutonRankingPoint`).attr("data-checked", data.BlueScoreSummary.AutonRankingPoint);
+  $(`#${blueSide}FinalScoringRankingPoint`).html(data.BlueScoreSummary.ScoringRankingPoint ? "&#x2714;" : "&#x2718;");
+  $(`#${blueSide}FinalScoringRankingPoint`).attr("data-checked", data.BlueScoreSummary.ScoringRankingPoint);
+  $(`#${blueSide}FinalEndgameRankingPoint`).html(data.BlueScoreSummary.EndgameRankingPoint ? "&#x2714;" : "&#x2718;");
+  $(`#${blueSide}FinalEndgameRankingPoint`).attr("data-checked", data.BlueScoreSummary.EndgameRankingPoint);
 
   let matchName = data.Match.LongName;
   if (data.Match.NameDetail !== "") {

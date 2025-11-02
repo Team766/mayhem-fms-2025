@@ -16,6 +16,7 @@ UI for entering realtime scores.
   /* Hide third-team UI when 2v2 is enabled */
   #scoringPanel[data-two-v-two="true"] .team-3,
   #scoringPanel[data-two-v-two="true"] #leave-3,
+  #scoringPanel[data-two-v-two="true"] #muster-3,
   #scoringPanel[data-two-v-two="true"] #park-3 {
     display: none !important;
   }
@@ -66,30 +67,37 @@ UI for entering realtime scores.
       {{template "teamButton" (dict "id" (printf "leave-%d" $i) "index" $i "class" "scoring-button" "onclick" (printf "handleLeaveClick(%d);" $i) "label" "Leave")}}
       {{end}}
     </div>
+    <div class="button-group" style="margin-top: 10px;">
+      {{range $i := seq 3}}
+      {{template "teamButton" (dict "id" (printf "muster-%d" $i) "index" $i "class" "scoring-button" "onclick" (printf "handleMusterClick(%d);" $i) "label" "Muster")}}
+      {{end}}
+    </div>
   </div>
   {{end}}
 
-  {{if .Position.ScoresStructure1}}
+  {{if .Position.ScoresTreasureShip}}
   <div class="scoring-section">
-    <h2>Structure 1 - Auto</h2>
-    {{template "counter" (dict "id" "auto_gp1_l1" "label" "Auto GP1 Level 1")}}
-    {{template "counter" (dict "id" "auto_gp1_l2" "label" "Auto GP1 Level 2")}}
+    <h2>Hull - Auto</h2>
+    {{template "counter" (dict "id" "auto_hull" "label" "Auto Hull")}}
   </div>
   <div class="scoring-section">
-    <h2>Structure 1 - Teleop</h2>
-    {{template "counter" (dict "id" "teleop_gp1_l1" "label" "Teleop GP1 Level 1")}}
-    {{template "counter" (dict "id" "teleop_gp1_l2" "label" "Teleop GP1 Level 2")}}
+    <h2>Hull - Teleop</h2>
+    {{template "counter" (dict "id" "teleop_hull" "label" "Teleop Hull")}}
+  </div>
+  <div class="scoring-section">
+    <h2>Deck - Auto</h2>
+    {{template "counter" (dict "id" "auto_deck" "label" "Auto Deck")}}
+  </div>
+  <div class="scoring-section">
+    <h2>Deck - Teleop</h2>
+    {{template "counter" (dict "id" "teleop_deck" "label" "Teleop Deck")}}
   </div>
   {{end}}
 
-  {{if .Position.ScoresStructure2}}
+  {{if .Position.ScoresKrakenLair}}
   <div class="scoring-section">
-    <h2>Structure 2 - Auto</h2>
-    {{template "counter" (dict "id" "auto_gp2" "label" "Auto GP2")}}
-  </div>
-  <div class="scoring-section">
-    <h2>Structure 2 - Teleop</h2>
-    {{template "counter" (dict "id" "teleop_gp2" "label" "Teleop GP2")}}
+    <h2>Kraken Lair</h2>
+    {{template "counter" (dict "id" "kraken_lair" "label" "Kraken Lair")}}
   </div>
   {{end}}
 

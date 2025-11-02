@@ -56,8 +56,8 @@ func TestCommitMatch(t *testing.T) {
 	// Committing test match should update the stored saved match but not persist anything.
 	match := &model.Match{Id: 0, Type: model.Test, Red1: 101, Red2: 102, Red3: 103, Blue1: 104, Blue2: 105, Blue3: 106}
 	matchResult := &model.MatchResult{
-		MatchId: match.Id, 
-		RedScore: &game.Score{Mayhem: game.Mayhem{}},
+		MatchId:   match.Id,
+		RedScore:  &game.Score{Mayhem: game.Mayhem{}},
 		BlueScore: &game.Score{Mayhem: game.Mayhem{LeaveStatuses: [3]bool{false, false, true}}},
 	}
 	err := web.commitMatchScore(match, matchResult, false)
@@ -117,12 +117,12 @@ func TestCommitTiebreak(t *testing.T) {
 		MatchId: match.Id,
 		// These should all be fields that aren't part of the tiebreaker.
 		RedScore: &game.Score{
-			Mayhem: game.Mayhem{TeleopGamepiece1Level1Count: 5},
+			Mayhem: game.Mayhem{TeleopHullCount: 2},
 			Fouls:  []game.Foul{{IsMajor: false}, {IsMajor: false}},
 		},
 		BlueScore: &game.Score{
-			Mayhem: game.Mayhem{TeleopGamepiece1Level2Count: 1},
-			Fouls:  []game.Foul{{IsMajor: false}},
+			Mayhem: game.Mayhem{TeleopHullCount: 2},
+			Fouls:  []game.Foul{{IsMajor: true}},
 		},
 	}
 
@@ -147,7 +147,7 @@ func TestCommitTiebreak(t *testing.T) {
 	assert.Equal(t, game.TieMatch, match.Status)
 
 	// Change the score to still be equal nominally but trigger the tiebreaker criteria.
-	matchResult.BlueScore.Mayhem.TeleopGamepiece2Count = 3
+	matchResult.BlueScore.Mayhem.TeleopDeckCount = 1
 	matchResult.BlueScore.Fouls = []game.Foul{{IsMajor: false}, {IsMajor: true}}
 
 	// Sanity check that the test scores are equal; they will need to be updated accordingly for each new game.
@@ -160,7 +160,7 @@ func TestCommitTiebreak(t *testing.T) {
 	err = web.commitMatchScore(match, matchResult, true)
 	assert.Nil(t, err)
 	match, _ = web.arena.Database.GetMatchById(1)
-	assert.Equal(t, game.RedWonMatch, match.Status)
+	assert.Equal(t, game.BlueWonMatch, match.Status)
 
 	// Swap red and blue and verify that the tie is broken in the other direction.
 	matchResult.RedScore, matchResult.BlueScore = matchResult.BlueScore, matchResult.RedScore
@@ -175,7 +175,7 @@ func TestCommitTiebreak(t *testing.T) {
 	err = web.commitMatchScore(match, matchResult, true)
 	assert.Nil(t, err)
 	match, _ = web.arena.Database.GetMatchById(1)
-	assert.Equal(t, game.BlueWonMatch, match.Status)
+	assert.Equal(t, game.RedWonMatch, match.Status)
 }
 
 func TestCommitCards(t *testing.T) {
@@ -326,11 +326,11 @@ func TestMatchPlayWebsocketCommands(t *testing.T) {
 	ws.Write("abortMatch", nil)
 	readWebsocketType(t, ws, "audienceDisplayMode")
 	assert.Equal(t, field.PostMatch, web.arena.MatchState)
-	web.arena.RedRealtimeScore.CurrentScore.Mayhem.TeleopGamepiece2Count = 6
+	web.arena.RedRealtimeScore.CurrentScore.Mayhem.TeleopHullCount = 6
 	web.arena.BlueRealtimeScore.CurrentScore.Mayhem.LeaveStatuses = [3]bool{true, false, true}
 	ws.Write("commitResults", nil)
 	readWebsocketMultiple(t, ws, 5) // scorePosted, matchLoad, realtimeScore, allianceStationDisplayMode, scoringStatus
-	assert.Equal(t, 6, web.arena.SavedMatchResult.RedScore.Mayhem.TeleopGamepiece2Count)
+	assert.Equal(t, 6, web.arena.SavedMatchResult.RedScore.Mayhem.TeleopHullCount)
 	assert.Equal(t, [3]bool{true, false, true}, web.arena.SavedMatchResult.BlueScore.Mayhem.LeaveStatuses)
 	assert.Equal(t, field.PreMatch, web.arena.MatchState)
 	ws.Write("discardResults", nil)

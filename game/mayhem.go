@@ -5,27 +5,29 @@
 package game
 
 type Mayhem struct {
-	AutoGamepiece1Level1Count   int
-	TeleopGamepiece1Level1Count int
-	AutoGamepiece1Level2Count   int
-	TeleopGamepiece1Level2Count int
-	AutoGamepiece2Count         int
-	TeleopGamepiece2Count       int
-	LeaveStatuses               [3]bool
-	ParkStatuses                [3]bool
+	AutoHullCount          int
+	TeleopHullCount        int
+	AutoDeckCount          int
+	TeleopDeckCount        int
+	EndgameKrakenLairCount int
+	LeaveStatuses          [3]bool
+	MusterStatuses         [3]bool
+	ParkStatuses           [3]bool
 }
 
 const (
-	LeavePoints                  = 5
-	ParkPoints                   = 5
-	AutoGamepiece1Level1Points   = 3
-	TeleopGamepiece1Level1Points = 1
-	AutoGamepiece1Level2Points   = 5
-	TeleopGamepiece1Level2Points = 3
-	AutoGamepiece2Points         = 4
-	TeleopGamepiece2Points       = 2
+	LeavePoints             = 4
+	MusterPoints            = 6
+	ParkPoints              = 3
+	AutoHullPoints          = 2 * TeleopHullPoints
+	TeleopHullPoints        = 2
+	AutoDeckPoints          = 2 * TeleopDeckPoints
+	TeleopDeckPoints        = 5
+	EndgameKrakenLairPoints = 10
 
-	Gamepiece1RPThreshold = 8
-	MinorFoulPoints       = 2
-	MajorFoulPoints       = 6
+	AutonRankingPointThreshold   = 20
+	ScoringRankingPointThreshold = 14
+	EndgameRankingPointThreshold = 3
+	MinorFoulPoints              = 5
+	MajorFoulPoints              = 10
 )

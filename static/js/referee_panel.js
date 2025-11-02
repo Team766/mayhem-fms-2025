@@ -124,15 +124,21 @@ const handleRealtimeScore = function (data) {
     $(`#${scoreRoot} .team-1-park`).text(score.Mayhem.ParkStatuses[0] ? "✓" : "❌");
     $(`#${scoreRoot} .team-2-park`).text(score.Mayhem.ParkStatuses[1] ? "✓" : "❌");
     $(`#${scoreRoot} .team-3-park`).text(score.Mayhem.ParkStatuses[2] ? "✓" : "❌");
+    // Muster status
+    $(`#${scoreRoot} .team-1-muster`).text(score.Mayhem.MusterStatuses[0] ? "✓" : "❌");
+    $(`#${scoreRoot} .team-2-muster`).text(score.Mayhem.MusterStatuses[1] ? "✓" : "❌");
+    $(`#${scoreRoot} .team-3-muster`).text(score.Mayhem.MusterStatuses[2] ? "✓" : "❌");
+    
     // Auto counters
-    $(`#${scoreRoot} .auto-gp1-l1`).text(score.Mayhem.AutoGamepiece1Level1Count);
-    $(`#${scoreRoot} .auto-gp1-l2`).text(score.Mayhem.AutoGamepiece1Level2Count);
-    $(`#${scoreRoot} .auto-gp2`).text(score.Mayhem.AutoGamepiece2Count);
+    $(`#${scoreRoot} .auto-hull`).text(score.Mayhem.AutoHullCount);
+    $(`#${scoreRoot} .auto-deck`).text(score.Mayhem.AutoDeckCount);
     
     // Teleop counters
-    $(`#${scoreRoot} .teleop-gp1-l1`).text(score.Mayhem.TeleopGamepiece1Level1Count);
-    $(`#${scoreRoot} .teleop-gp1-l2`).text(score.Mayhem.TeleopGamepiece1Level2Count);
-    $(`#${scoreRoot} .teleop-gp2`).text(score.Mayhem.TeleopGamepiece2Count);
+    $(`#${scoreRoot} .teleop-hull`).text(score.Mayhem.TeleopHullCount);
+    $(`#${scoreRoot} .teleop-deck`).text(score.Mayhem.TeleopDeckCount);
+    
+    // Kraken Lair
+    $(`#${scoreRoot} .kraken-lair`).text(score.Mayhem.EndgameKrakenLairCount);
   }
 }
 

@@ -6,21 +6,20 @@
 package game
 
 type ScoreSummary struct {
-	LeavePoints                 int
-	AutoPoints                  int // used for ranking tiebreaker
-	NumGamepiece1               int
-	Gamepiece1Points            int
-	NumGamepiece2               int
-	Gamepiece2Points            int
-	ParkPoints                  int
-	MatchPoints                 int
-	FoulPoints                  int
-	Score                       int
-	LeaveBonusRankingPoint      bool
-	Gamepiece1BonusRankingPoint bool
-	ParkBonusRankingPoint       bool
-	BonusRankingPoints          int
-	NumOpponentMajorFouls       int
+	LeavePoints         int
+	MusterPoints        int
+	AutoPoints          int
+	DeckPoints          int
+	TreasureShipPoints  int
+	KrakenLairPoints    int
+	ParkPoints          int
+	MatchPoints         int
+	FoulPoints          int
+	Score               int
+	AutonRankingPoint   bool
+	ScoringRankingPoint bool
+	EndgameRankingPoint bool
+	BonusRankingPoints  int
 }
 
 type MatchStatus int
@@ -46,14 +45,17 @@ func DetermineMatchStatus(redScoreSummary, blueScoreSummary *ScoreSummary, apply
 	if applyPlayoffTiebreakers {
 		// Check scoring breakdowns to resolve playoff ties.
 		if status := comparePoints(
-			redScoreSummary.NumOpponentMajorFouls, blueScoreSummary.NumOpponentMajorFouls,
+			blueScoreSummary.FoulPoints, redScoreSummary.FoulPoints,
 		); status != TieMatch {
 			return status
 		}
-		if status := comparePoints(redScoreSummary.AutoPoints, blueScoreSummary.AutoPoints); status != TieMatch {
+		if status := comparePoints(redScoreSummary.KrakenLairPoints, blueScoreSummary.KrakenLairPoints); status != TieMatch {
 			return status
 		}
-		if status := comparePoints(redScoreSummary.ParkPoints, blueScoreSummary.ParkPoints); status != TieMatch {
+		if status := comparePoints(redScoreSummary.DeckPoints, blueScoreSummary.DeckPoints); status != TieMatch {
+			return status
+		}
+		if status := comparePoints(redScoreSummary.AutoPoints, blueScoreSummary.AutoPoints); status != TieMatch {
 			return status
 		}
 	}
