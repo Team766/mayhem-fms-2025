@@ -6,11 +6,12 @@
 package web
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/Team254/cheesy-arena/field"
 	"github.com/Team254/cheesy-arena/model"
 	"github.com/Team254/cheesy-arena/websocket"
-	"net/http"
-	"time"
 )
 
 const (
@@ -94,10 +95,12 @@ func (web *Web) queueingDisplayMatchLoadHandler(w http.ResponseWriter, r *http.R
 		Matches           []model.Match
 		RedOffFieldTeams  [][]int
 		BlueOffFieldTeams [][]int
+		TwoVsTwoMode      bool
 	}{
 		upcomingMatches,
 		redOffFieldTeamsByMatch,
 		blueOffFieldTeamsByMatch,
+		web.arena.EventSettings.TwoVsTwoMode,
 	}
 	err = template.ExecuteTemplate(w, "queueing_display_match_load.html", data)
 	if err != nil {

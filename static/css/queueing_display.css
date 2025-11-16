@@ -39,8 +39,8 @@ body {
 }
 .red-teams, .blue-teams {
   font-family: FuturaLTBold;
-  line-height: 48px;
-  font-size: 42px;
+  line-height: 40px;
+  font-size: 36px;
 }
 .red-teams {
   color: #ff4444;
