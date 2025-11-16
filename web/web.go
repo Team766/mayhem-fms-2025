@@ -217,19 +217,17 @@ func (web *Web) newHandler() http.Handler {
 	mux.HandleFunc("POST /setup/schedule/save", web.scheduleSavePostHandler)
 	mux.HandleFunc("GET /setup/settings", web.settingsGetHandler)
 	mux.HandleFunc("POST /setup/settings", web.settingsPostHandler)
-
 	mux.HandleFunc("GET /setup/sponsor_slides", web.sponsorSlidesGetHandler)
 	mux.HandleFunc("POST /setup/sponsor_slides", web.sponsorSlidesPostHandler)
 	mux.HandleFunc("GET /setup/teams", web.teamsGetHandler)
 	mux.HandleFunc("POST /setup/teams", web.teamsPostHandler)
-	mux.HandleFunc("POST /setup/teams/{id}/delete", web.teamDeletePostHandler)
-	mux.HandleFunc("GET /setup/teams/{id}/edit", web.teamEditGetHandler)
+	mux.HandleFunc("POST /setup/teams/clear", web.teamsClearHandler)
+	mux.HandleFunc("POST /setup/teams/reconfigure_switch", web.reconfigureSwitchHandler)
+	mux.HandleFunc("GET /setup/teams/{id:[0-9]+}/edit", web.teamEditGetHandler)
 	mux.HandleFunc("POST /setup/teams/{id}/edit", web.teamEditPostHandler)
 	mux.HandleFunc("POST /setup/teams/clear", web.teamsClearHandler)
 	mux.HandleFunc("GET /setup/teams/generate_wpa_keys", web.teamsGenerateWpaKeysHandler)
 	mux.HandleFunc("GET /setup/teams/progress", web.teamsUpdateProgressBarHandler)
-
-	return mux
 }
 
 // Writes the given error out as plain text with a status code of 500.

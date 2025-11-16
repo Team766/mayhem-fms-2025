@@ -246,9 +246,22 @@ func (web *Web) renderTeams(w http.ResponseWriter, r *http.Request, showErrorMes
 
 // Returns true if it is safe to change the team list (i.e. no matches/results exist yet).
 func (web *Web) canModifyTeamList() bool {
-	matches, err := web.arena.Database.GetMatchesByType(model.Qualification, true)
-	if err != nil || len(matches) > 0 {
-		return false
+	matches, _ := web.arena.Database.GetMatchesByType(model.Qualification, false)
+	return len(matches) == 0
+}
+
+// Reconfigures the network switch with the current team assignments.
+func (web *Web) reconfigureSwitchHandler(w http.ResponseWriter, r *http.Request) {
+	if !web.userIsAdmin(w, r) {
+		return
 	}
-	return true
+
+	err := web.arena.ReconfigureNetwork()
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte("Switch reconfigured successfully"))
 }

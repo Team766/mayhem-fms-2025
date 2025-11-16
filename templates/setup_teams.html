@@ -40,6 +40,9 @@ UI for configuring the team list for an event.
         <div class="row mb-3">
           <a href="/setup/teams/generate_wpa_keys?all=false" class="btn btn-danger">Generate Missing WPA Keys</a>
         </div>
+        <div class="row mb-3">
+          <button type="button" id="reconfigureSwitch" class="btn btn-warning">Configure Network Switch</button>
+        </div>
         {{end}}
         
       </fieldset>
@@ -147,5 +150,26 @@ UI for configuring the team list for an event.
       }
     })
   })
+
+  // Handle the Configure Network Switch button click
+  $('#reconfigureSwitch').click(function() {
+    var button = $(this);
+    button.prop('disabled', true).text('Configuring...');
+    
+    $.ajax({
+      url: '/setup/teams/reconfigure_switch',
+      type: 'POST',
+      success: function() {
+        button.text('Success!');
+        setTimeout(function() {
+          button.text('Configure Network Switch').prop('disabled', false);
+        }, 2000);
+      },
+      error: function(xhr) {
+        alert('Failed to configure switch: ' + xhr.responseText);
+        button.text('Error - Try Again').prop('disabled', false);
+      }
+    });
+  });
 </script>
 {{end}}

@@ -1056,6 +1056,33 @@ func (arena *Arena) runPeriodicTasks() {
 	arena.purgeDisconnectedDisplays()
 }
 
+// ReconfigureNetwork triggers a reconfiguration of the network switch with the current team assignments.
+// This is useful when teams have been substituted and the switch needs to be updated manually.
+func (arena *Arena) ReconfigureNetwork() error {
+	if !arena.EventSettings.NetworkSecurityEnabled {
+		return fmt.Errorf("network security is not enabled in event settings")
+	}
+
+	teams := [6]*model.Team{
+		arena.AllianceStations["R1"].Team,
+		arena.AllianceStations["R2"].Team,
+		arena.AllianceStations["R3"].Team,
+		arena.AllianceStations["B1"].Team,
+		arena.AllianceStations["B2"].Team,
+		arena.AllianceStations["B3"].Team,
+	}
+
+	// Clear any preloaded teams to force reconfiguration
+	arena.preloadedTeams = nil
+
+	// Configure the network
+	if err := arena.networkSwitch.ConfigureTeamEthernet(teams); err != nil {
+		return fmt.Errorf("failed to configure network switch: %v", err)
+	}
+
+	return nil
+}
+
 // trussLightWarningSequence generates the sequence of truss light states during the "sonar ping" warning sound. It
 // returns true if the sequence is active, and an array of booleans indicating the state of each truss light.
 func trussLightWarningSequence(matchTimeSec float64) (bool, [3]bool) {
