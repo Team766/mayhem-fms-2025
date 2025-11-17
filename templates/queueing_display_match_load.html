@@ -82,7 +82,7 @@
         <div class="col-lg-1 avatars">
           <img class="avatar" src="/api/teams/{{$match.Blue1}}/avatar"/><br/>
           <img class="avatar" src="/api/teams/{{$match.Blue2}}/avatar"/><br/>
-          <img class="avatar" src="/api/teams/{{$match.Blue3}}/avatar"/>
+          {{if not $.TwoVsTwoMode}}<img class="avatar" src="/api/teams/{{$match.Blue3}}/avatar"/>{{end}}
         </div>
       </div>
     </div>
