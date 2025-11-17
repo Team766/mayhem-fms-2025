@@ -9,7 +9,6 @@ import (
 	"encoding/csv"
 	"fmt"
 	"github.com/Team254/cheesy-arena/model"
-	"log"
 	"math"
 	"math/rand"
 	"os"
@@ -49,7 +48,6 @@ func BuildRandomSchedule(
 
 	if twoVsTwo {
 		filename = fmt.Sprintf("%s/2p_%d_0.csv", filepath.Join(model.BaseDir, schedulesDir), numTeams)
-		log.Print("twoVsTwo match %s", filename)
 	} else {
 		filename = fmt.Sprintf("%s/%d_%d.csv", filepath.Join(model.BaseDir, schedulesDir), numTeams, matchesPerTeam)
 	}
