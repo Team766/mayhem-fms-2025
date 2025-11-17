@@ -14,6 +14,7 @@ import (
 )
 
 // Determines the rankings from the stored match results, and saves them to the database.
+// Note that in 2v2, all fake 3rd teams are surrogates, so they provide no match results.
 func CalculateRankings(database *model.Database, preservePreviousRank bool) (game.Rankings, error) {
 	matches, err := database.GetMatchesByType(model.Qualification, false)
 	if err != nil {

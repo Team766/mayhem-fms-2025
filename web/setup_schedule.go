@@ -90,7 +90,7 @@ func (web *Web) scheduleGeneratePostHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
-	matches, err := tournament.BuildRandomSchedule(teams, scheduleBlocks, matchType)
+	matches, err := tournament.BuildRandomSchedule(teams, scheduleBlocks, matchType, web.arena.EventSettings.TwoVsTwoMode)
 	if err != nil {
 		web.renderSchedule(w, r, fmt.Sprintf("Error generating schedule: %s.", err.Error()))
 		return
