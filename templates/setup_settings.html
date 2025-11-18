@@ -57,6 +57,13 @@ UI for configuring event settings.
                 </div>
               </div>
               <div class="row mb-3">
+                <label class="col-lg-6 control-label" for="GreenScreen">
+                  Green Screen
+                </label>
+                <div class="col-lg-1 checkbox">
+                  <input type="checkbox" id="GreenScreen"
+                    name="GreenScreen" {{if .GreenScreen}} checked{{end}}>
+                </div>
                 <label class="col-lg-6 control-label" for="twoVsTwoMode">
                   2v2 Mode
                 </label>
