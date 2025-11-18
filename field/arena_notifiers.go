@@ -185,6 +185,7 @@ func (arena *Arena) GenerateMatchLoadMessage() any {
 		RedOffFieldTeams  []*model.Team
 		BlueOffFieldTeams []*model.Team
 		BreakDescription  string
+		GreenScreen       bool
 		TwoVsTwoMode      bool
 	}{
 		arena.CurrentMatch,
@@ -196,6 +197,7 @@ func (arena *Arena) GenerateMatchLoadMessage() any {
 		redOffFieldTeams,
 		blueOffFieldTeams,
 		arena.breakDescription,
+		arena.EventSettings.GreenScreen,
 		arena.EventSettings.TwoVsTwoMode,
 	}
 }
