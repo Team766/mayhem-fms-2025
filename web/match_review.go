@@ -8,10 +8,11 @@ package web
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Team254/cheesy-arena/game"
-	"github.com/Team254/cheesy-arena/model"
 	"net/http"
 	"strconv"
+
+	"github.com/Team254/cheesy-arena/game"
+	"github.com/Team254/cheesy-arena/model"
 )
 
 type MatchReviewListItem struct {
@@ -92,13 +93,21 @@ func (web *Web) matchReviewEditGetHandler(w http.ResponseWriter, r *http.Request
 		handleWebErr(w, err)
 		return
 	}
+	// Calculate number of teams per alliance
+	numTeamsPerAlliance := 3
+	if web.arena.EventSettings.TwoVsTwoMode {
+		numTeamsPerAlliance = 2
+	}
+
 	data := struct {
 		*model.EventSettings
-		Match           *model.Match
-		MatchResultJson string
-		IsCurrentMatch  bool
-		Rules           map[int]*game.Rule
-	}{web.arena.EventSettings, match, string(matchResultJson), isCurrent, game.GetAllRules()}
+		Match               *model.Match
+		MatchResultJson     string
+		IsCurrentMatch      bool
+		Rules               map[int]*game.Rule
+		TwoVsTwoMode        bool
+		NumTeamsPerAlliance int
+	}{web.arena.EventSettings, match, string(matchResultJson), isCurrent, game.GetAllRules(), web.arena.EventSettings.TwoVsTwoMode, numTeamsPerAlliance}
 	err = template.ExecuteTemplate(w, "base", data)
 	if err != nil {
 		handleWebErr(w, err)

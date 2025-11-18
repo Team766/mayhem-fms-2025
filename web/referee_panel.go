@@ -7,15 +7,16 @@ package web
 
 import (
 	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"strconv"
+
 	"github.com/Team254/cheesy-arena/field"
 	"github.com/Team254/cheesy-arena/game"
 	"github.com/Team254/cheesy-arena/model"
 	"github.com/Team254/cheesy-arena/websocket"
 	"github.com/mitchellh/mapstructure"
-	"io"
-	"log"
-	"net/http"
-	"strconv"
 )
 
 // Renders the referee interface for assigning fouls.
@@ -30,9 +31,16 @@ func (web *Web) refereePanelHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Calculate number of teams per alliance
+	numTeamsPerAlliance := 3
+	if web.arena.EventSettings.TwoVsTwoMode {
+		numTeamsPerAlliance = 2
+	}
+
 	data := struct {
 		*model.EventSettings
-	}{web.arena.EventSettings}
+		NumTeamsPerAlliance int
+	}{web.arena.EventSettings, numTeamsPerAlliance}
 	err = template.ExecuteTemplate(w, "base_no_navbar", data)
 	if err != nil {
 		handleWebErr(w, err)
@@ -48,16 +56,26 @@ func (web *Web) refereePanelFoulListHandler(w http.ResponseWriter, r *http.Reque
 		return
 	}
 
+	// Calculate number of teams per alliance
+	numTeamsPerAlliance := 3
+	if web.arena.EventSettings.TwoVsTwoMode {
+		numTeamsPerAlliance = 2
+	}
+
 	data := struct {
-		Match     *model.Match
-		RedFouls  []game.Foul
-		BlueFouls []game.Foul
-		Rules     map[int]*game.Rule
+		Match               *model.Match
+		RedFouls            []game.Foul
+		BlueFouls           []game.Foul
+		Rules               map[int]*game.Rule
+		NumTeamsPerAlliance int
+		TwoVsTwoMode        bool
 	}{
 		web.arena.CurrentMatch,
 		web.arena.RedRealtimeScore.CurrentScore.Fouls,
 		web.arena.BlueRealtimeScore.CurrentScore.Fouls,
 		game.GetAllRules(),
+		numTeamsPerAlliance,
+		web.arena.EventSettings.TwoVsTwoMode,
 	}
 	err = template.ExecuteTemplate(w, "referee_panel_foul_list", data)
 	if err != nil {

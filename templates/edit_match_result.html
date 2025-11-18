@@ -41,7 +41,7 @@ UI for manually editing the result for a match.
     </div>
     <h6 class="fw-bold mb-2">Leave Status</h6>
     <div class="row mb-3">
-      {{range $i := seq 3}}
+      {{range $i := seq .NumTeamsPerAlliance}}
       <div class="col-lg-2">
         <label class="control-label">Team {{"{{team"}}{{$i}}{{"}}"}}</label>
         <input type="checkbox" class="ms-3" name="{{"{{alliance}}"}}LeaveStatuses{{$i}}">
@@ -50,7 +50,7 @@ UI for manually editing the result for a match.
     </div>
     <h6 class="fw-bold mb-2">Muster Status</h6>
     <div class="row mb-3">
-      {{range $i := seq 3}}
+      {{range $i := seq .NumTeamsPerAlliance}}
       <div class="col-lg-2">
         <label class="control-label">Team {{"{{team"}}{{$i}}{{"}}"}}</label>
         <input type="checkbox" class="ms-3" name="{{"{{alliance}}"}}MusterStatuses{{$i}}">
@@ -75,7 +75,7 @@ UI for manually editing the result for a match.
     <legend>Endgame</legend>
     <h6 class="fw-bold mb-2">Park Status</h6>
     <div class="row mb-3">
-      {{range $i := seq 3}}
+      {{range $i := seq .NumTeamsPerAlliance}}
       <div class="col-lg-2">
         <label class="control-label">Team {{"{{team"}}{{$i}}{{"}}"}}</label>
         <input type="checkbox" class="ms-3" name="{{"{{alliance}}"}}ParkStatuses{{$i}}">
@@ -120,12 +120,14 @@ UI for manually editing the result for a match.
               Team {{"{{../team2}}"}}
             </label>
           </div>
+          {{if not .TwoVsTwoMode}}
           <div class="col-lg-2">
             <label>
               <input type="radio" name="{{"{{../alliance}}"}}Foul{{"{{@index}}"}}Team" value="{{"{{../team3}}"}}">
               Team {{"{{../team3}}"}}
             </label>
           </div>
+          {{end}}
         </div>
       </div>
     </div>
@@ -151,7 +153,7 @@ Add Foul
 </fieldset>
 <fieldset>
   <legend>Cards</legend>
-  {{range $i := seq 3}}
+  {{range $i := seq .NumTeamsPerAlliance}}
   <div class="row mb-3">
     <label class="col-lg-2 control-label">Team {{"{{team"}}{{$i}}{{"}}"}}</label>
     <div class="col-lg-8">

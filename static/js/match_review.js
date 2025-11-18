@@ -31,26 +31,19 @@ const renderResults = function (alliance) {
   $(`#${alliance}Score`).html(scoreContent);
 
   // Set the values of the form fields from the JSON results data.
-  getInputElement(alliance, "AutoTroughNearCoral").val(result.score.Reef.AutoTroughNear);
-  getInputElement(alliance, "AutoTroughFarCoral").val(result.score.Reef.AutoTroughFar);
-  getInputElement(alliance, "TroughNearCoral").val(result.score.Reef.TroughNear);
-  getInputElement(alliance, "TroughFarCoral").val(result.score.Reef.TroughFar);
-  getInputElement(alliance, "BargeAlgae").val(result.score.BargeAlgae);
-  getInputElement(alliance, "ProcessorAlgae").val(result.score.ProcessorAlgae);
+  getInputElement(alliance, "AutoHullCount").val(result.score.Mayhem.AutoHullCount);
+  getInputElement(alliance, "AutoDeckCount").val(result.score.Mayhem.AutoDeckCount);
+  getInputElement(alliance, "TeleopHullCount").val(result.score.Mayhem.TeleopHullCount);
+  getInputElement(alliance, "TeleopDeckCount").val(result.score.Mayhem.TeleopDeckCount);
+  getInputElement(alliance, "EndgameKrakenLairCount").val(result.score.Mayhem.EndgameKrakenLairCount);
 
   for (let i = 0; i < 3; i++) {
     const i1 = i + 1;
 
     getInputElement(alliance, `RobotsBypassed${i1}`).prop("checked", result.score.RobotsBypassed[i]);
     getInputElement(alliance, `LeaveStatuses${i1}`).prop("checked", result.score.Mayhem.LeaveStatuses[i]);
-    getInputElement(alliance, `EndgameStatuses${i1}`, result.score.EndgameStatuses[i]).prop("checked", true);
-
-    for (let j = 0; j < 12; j++) {
-      getInputElement(alliance, `ReefAutoBranchesPipe${i}Branch${j}`).prop(
-        "checked", result.score.Reef.AutoBranches[i][j]
-      );
-      getInputElement(alliance, `ReefBranchesPipe${i}Branch${j}`).prop("checked", result.score.Reef.Branches[i][j]);
-    }
+    getInputElement(alliance, `MusterStatuses${i1}`).prop("checked", result.score.Mayhem.MusterStatuses[i]);
+    getInputElement(alliance, `ParkStatuses${i1}`).prop("checked", result.score.Mayhem.ParkStatuses[i]);
   }
 
   if (result.score.Fouls != null) {
@@ -79,31 +72,20 @@ const updateResults = function (alliance) {
   result.score.RobotsBypassed = [];
   result.score.Mayhem = result.score.Mayhem || {};
   result.score.Mayhem.LeaveStatuses = [];
+  result.score.Mayhem.MusterStatuses = [];
   result.score.Mayhem.ParkStatuses = [];
-  result.score.Reef = {
-    AutoBranches: [],
-    Branches: [],
-    AutoTroughNear: parseInt(formData[`${alliance}AutoTroughNearCoral`]),
-    AutoTroughFar: parseInt(formData[`${alliance}AutoTroughFarCoral`]),
-    TroughNear: parseInt(formData[`${alliance}TroughNearCoral`]),
-    TroughFar: parseInt(formData[`${alliance}TroughFarCoral`]),
-  };
-  result.score.BargeAlgae = parseInt(formData[`${alliance}BargeAlgae`]);
-  result.score.ProcessorAlgae = parseInt(formData[`${alliance}ProcessorAlgae`]);
-  result.score.EndgameStatuses = [];
+  result.score.Mayhem.AutoHullCount = parseInt(formData[`${alliance}AutoHullCount`]) || 0;
+  result.score.Mayhem.TeleopHullCount = parseInt(formData[`${alliance}TeleopHullCount`]) || 0;
+  result.score.Mayhem.AutoDeckCount = parseInt(formData[`${alliance}AutoDeckCount`]) || 0;
+  result.score.Mayhem.TeleopDeckCount = parseInt(formData[`${alliance}TeleopDeckCount`]) || 0;
+  result.score.Mayhem.EndgameKrakenLairCount = parseInt(formData[`${alliance}EndgameKrakenLairCount`]) || 0;
   for (let i = 0; i < 3; i++) {
     const i1 = i + 1;
 
     result.score.RobotsBypassed[i] = formData[`${alliance}RobotsBypassed${i1}`] === "on";
     result.score.Mayhem.LeaveStatuses[i] = formData[`${alliance}LeaveStatuses${i1}`] === "on";
-    result.score.Mayhem.ParkStatuses[i] = false; // Initialize ParkStatuses if not already set
-    result.score.EndgameStatuses[i] = parseInt(formData[`${alliance}EndgameStatuses${i1}`]);
-    result.score.Reef.AutoBranches[i] = [];
-    result.score.Reef.Branches[i] = [];
-    for (let j = 0; j < 12; j++) {
-      result.score.Reef.AutoBranches[i][j] = formData[`${alliance}ReefAutoBranchesPipe${i}Branch${j}`] === "on";
-      result.score.Reef.Branches[i][j] = formData[`${alliance}ReefBranchesPipe${i}Branch${j}`] === "on";
-    }
+    result.score.Mayhem.MusterStatuses[i] = formData[`${alliance}MusterStatuses${i1}`] === "on";
+    result.score.Mayhem.ParkStatuses[i] = formData[`${alliance}ParkStatuses${i1}`] === "on";
   }
 
   result.score.Fouls = [];
