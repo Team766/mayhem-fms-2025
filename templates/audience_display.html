@@ -117,7 +117,7 @@ Display shown on the audience screen overlayed over the video.
             <div class="final-breakdown final-breakdown-teams">
               <div class="final-teams reversible-left">
                 <div class="final-alliance playoff-only-field" id="leftFinalAlliance"></div>
-                {{range $i := seq 4}}
+                {{range $i := seq 2}}
                 <div class="final-team-row">
                   <img class="final-team-avatar" id="leftFinalTeam{{$i}}Avatar" src=""/>
                   <div class="final-team-number" id="leftFinalTeam{{$i}}"></div>
@@ -127,6 +127,19 @@ Display shown on the audience screen overlayed over the video.
                   <div class="final-team-rank playoff-hidden-field">
                     <img id="leftFinalTeam{{$i}}RankIndicator" src=""/>
                     <div id="leftFinalTeam{{$i}}RankNumber"></div>
+                  </div>
+                </div>
+                {{end}}
+                {{if not .EventSettings.TwoVsTwoMode}}
+                <div class="final-team-row">
+                  <img class="final-team-avatar" id="leftFinalTeam3Avatar" src=""/>
+                  <div class="final-team-number" id="leftFinalTeam3"></div>
+                  <div class="final-team-card">
+                    <div id="leftFinalTeam3Card"></div>
+                  </div>
+                  <div class="final-team-rank playoff-hidden-field">
+                    <img id="leftFinalTeam3RankIndicator" src=""/>
+                    <div id="leftFinalTeam3RankNumber"></div>
                   </div>
                 </div>
                 {{end}}
@@ -177,7 +190,7 @@ Display shown on the audience screen overlayed over the video.
             <div class="final-breakdown final-breakdown-teams">
               <div class="final-teams reversible-right">
                 <div class="final-alliance playoff-only-field" id="rightFinalAlliance"></div>
-                {{range $i := seq 4}}
+                {{range $i := seq 2}}
                 <div class="final-team-row">
                   <img class="final-team-avatar" id="rightFinalTeam{{$i}}Avatar" src=""/>
                   <div class="final-team-number" id="rightFinalTeam{{$i}}"></div>
@@ -187,6 +200,19 @@ Display shown on the audience screen overlayed over the video.
                   <div class="final-team-rank playoff-hidden-field">
                     <img id="rightFinalTeam{{$i}}RankIndicator" src=""/>
                     <div id="rightFinalTeam{{$i}}RankNumber"></div>
+                  </div>
+                </div>
+                {{end}}
+                {{if not .EventSettings.TwoVsTwoMode}}
+                <div class="final-team-row">
+                  <img class="final-team-avatar" id="rightFinalTeam3Avatar" src=""/>
+                  <div class="final-team-number" id="rightFinalTeam3"></div>
+                  <div class="final-team-card">
+                    <div id="rightFinalTeam3Card"></div>
+                  </div>
+                  <div class="final-team-rank playoff-hidden-field">
+                    <img id="rightFinalTeam3RankIndicator" src=""/>
+                    <div id="rightFinalTeam3RankNumber"></div>
                   </div>
                 </div>
                 {{end}}
