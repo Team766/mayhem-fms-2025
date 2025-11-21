@@ -114,7 +114,7 @@ func newSingleEliminationBracket(numAlliances int) (*Matchup, []breakSpec, error
 	// Define quarterfinal matches.
 	qf1 := Matchup{
 		id:                 "QF1",
-		NumWinsToAdvance:   2,
+		NumWinsToAdvance:   1,
 		redAllianceSource:  newSingleEliminationAllianceSource(&ef1, numAlliances),
 		blueAllianceSource: newSingleEliminationAllianceSource(&ef2, numAlliances),
 		matchSpecs: []*matchSpec{
@@ -125,7 +125,7 @@ func newSingleEliminationBracket(numAlliances int) (*Matchup, []breakSpec, error
 	}
 	qf2 := Matchup{
 		id:                 "QF2",
-		NumWinsToAdvance:   2,
+		NumWinsToAdvance:   1,
 		redAllianceSource:  newSingleEliminationAllianceSource(&ef3, numAlliances),
 		blueAllianceSource: newSingleEliminationAllianceSource(&ef4, numAlliances),
 		matchSpecs: []*matchSpec{
@@ -136,7 +136,7 @@ func newSingleEliminationBracket(numAlliances int) (*Matchup, []breakSpec, error
 	}
 	qf3 := Matchup{
 		id:                 "QF3",
-		NumWinsToAdvance:   2,
+		NumWinsToAdvance:   1,
 		redAllianceSource:  newSingleEliminationAllianceSource(&ef5, numAlliances),
 		blueAllianceSource: newSingleEliminationAllianceSource(&ef6, numAlliances),
 		matchSpecs: []*matchSpec{
@@ -147,7 +147,7 @@ func newSingleEliminationBracket(numAlliances int) (*Matchup, []breakSpec, error
 	}
 	qf4 := Matchup{
 		id:                 "QF4",
-		NumWinsToAdvance:   2,
+		NumWinsToAdvance:   1,
 		redAllianceSource:  newSingleEliminationAllianceSource(&ef7, numAlliances),
 		blueAllianceSource: newSingleEliminationAllianceSource(&ef8, numAlliances),
 		matchSpecs: []*matchSpec{
@@ -160,7 +160,7 @@ func newSingleEliminationBracket(numAlliances int) (*Matchup, []breakSpec, error
 	// Define semifinal matches.
 	sf1 := Matchup{
 		id:                 "SF1",
-		NumWinsToAdvance:   2,
+		NumWinsToAdvance:   1,
 		redAllianceSource:  newSingleEliminationAllianceSource(&qf1, numAlliances),
 		blueAllianceSource: newSingleEliminationAllianceSource(&qf2, numAlliances),
 		matchSpecs: []*matchSpec{
@@ -171,7 +171,7 @@ func newSingleEliminationBracket(numAlliances int) (*Matchup, []breakSpec, error
 	}
 	sf2 := Matchup{
 		id:                 "SF2",
-		NumWinsToAdvance:   2,
+		NumWinsToAdvance:   1,
 		redAllianceSource:  newSingleEliminationAllianceSource(&qf3, numAlliances),
 		blueAllianceSource: newSingleEliminationAllianceSource(&qf4, numAlliances),
 		matchSpecs: []*matchSpec{
